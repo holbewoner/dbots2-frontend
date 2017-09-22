@@ -1,6 +1,6 @@
 <template>
     <v-app toolbar footer dark>
-        <v-navigation-drawer persistent temporary v-model="sidebar.open" enable-resize-watcher>
+        <v-navigation-drawer persistent clipped v-model="sidebar.open" enable-resize-watcher>
             <v-list dense class="pt-0">
             </v-list>
         </v-navigation-drawer>
@@ -27,7 +27,7 @@ export default {
     data() {
         return {
             sidebar: {
-                open: false
+                open: true
             }
         }
     }
