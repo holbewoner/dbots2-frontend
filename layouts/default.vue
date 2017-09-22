@@ -1,6 +1,8 @@
 <template>
     <v-app toolbar footer dark>
-        <v-navigation-drawer temporary v-model="sidebar.open" enable-resize-watcher>
+        <v-navigation-drawer persistent temporary v-model="sidebar.open" enable-resize-watcher>
+            <v-list dense class="pt-0">
+            </v-list>
         </v-navigation-drawer>
         <v-toolbar fixed>
             <v-toolbar-side-icon @click.stop="sidebar.open = !sidebar.open"></v-toolbar-side-icon>
@@ -9,7 +11,14 @@
         <main>
             <nuxt/>
         </main>
-        <v-footer></v-footer>
+        <v-footer>
+            <div class="grey--text text--darken-2">
+                Design by FiniteReality, using Vue, Nuxt and Vuetify.
+                Surprised?
+            </div>
+            <v-spacer></v-spacer>
+            <div>&copy; {{new Date().getFullYear()}} Discord Bots</div>
+        </v-footer>
     </v-app>
 </template>
 
