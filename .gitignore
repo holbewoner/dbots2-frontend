@@ -1,2 +1,3 @@
 # Let's ignore the object with infinite mass, shall we?
 node_modules
+.nuxt
