@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container fluid>
         <v-layout row>
             <v-flex xs12>
                 <section>
@@ -17,22 +17,30 @@
             </v-flex>
         </v-layout>
         <v-layout row class="bot-lists">
-            <v-flex xs8 offset-xs2>
-                <section>
-                    <h6>Newest Bots</h6>
+            <v-flex xs12 md10 offset-md1>
+                <v-layout row wrap>
+                    <v-flex xs12 xl6>
+                        <section>
+                            <h6>Newest Bots</h6>
 
-                    <bot-list-short />
-                </section>
-                <section>
-                    <h6>Most Favourited Bots</h6>
+                            <bot-list-short />
+                        </section>
+                    </v-flex>
+                    <v-flex xs12 xl6>
+                        <section>
+                            <h6>Most Favourited Bots</h6>
 
-                    <bot-list-short />
-                </section>
-                <section>
-                    <h6>Spotlighted Bots</h6>
+                            <bot-list-short />
+                        </section>
+                    </v-flex>
+                    <v-flex xs12 xl6>
+                        <section>
+                            <h6>Spotlighted Bots</h6>
 
-                    <bot-list-short />
-                </section>
+                            <bot-list-short />
+                        </section>
+                    </v-flex>
+                </v-layout>
             </v-flex>
         </v-layout>
     </v-container>
@@ -49,6 +57,11 @@ export default {
 </script>
 
 <style scoped>
+@media (min-width: 1904px) {
+    .bot-lists .flex.xl6 {
+        padding-right: 1rem;
+    }
+}
 .bot-lists section {
     padding-bottom: 1rem;
 }
