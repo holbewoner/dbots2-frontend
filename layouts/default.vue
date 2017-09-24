@@ -13,13 +13,13 @@
                             <v-menu offset-y :position-absolutely="true">
                                 <span class="user-name" slot="activator">Abalabahaha#1234 <v-icon>keyboard_arrow_down</v-icon></span>
                                 <v-list>
-                                    <v-list-tile>
+                                    <v-list-tile to="/users/me">
                                         <v-list-tile-title>Profile</v-list-tile-title>
                                     </v-list-tile>
-                                    <v-list-tile>
+                                    <v-list-tile to="/users/me/settings">
                                         <v-list-tile-title>Settings</v-list-tile-title>
                                     </v-list-tile>
-                                    <v-list-tile>
+                                    <v-list-tile @click=""> <!--TODO: logout -->
                                         <v-list-tile-title>Logout</v-list-tile-title>
                                     </v-list-tile>
                                 </v-list>
@@ -39,10 +39,9 @@
         <main>
             <nuxt/>
         </main>
-        <v-footer>
+        <v-footer fixed>
             <div class="grey--text text--darken-2">
-                Design by FiniteReality, using Vue, Nuxt and Vuetify.
-                Surprised?
+                maybe we should put some fancy git info here !!!
             </div>
             <v-spacer></v-spacer>
             <div>&copy; {{new Date().getFullYear()}} Discord Bots</div>

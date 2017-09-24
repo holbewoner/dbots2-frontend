@@ -22,6 +22,8 @@ module.exports = {
         ]
     },
 
+    transition: 'slide-x-reverse-transition',
+
     css: [
         'node_modules/vuetify/dist/vuetify.min.css'
     ]

@@ -1,9 +1,9 @@
 <template>
     <v-card>
-        <v-list class="pt-0 pb-0">
-            <v-list-tile class="bot" avatar v-for="(bot, pos) in bots" v-bind:key="bot.name" @click="">
-                <v-list-tile-avatar>
-                    <img v-bind:src="'http:\/\/lorempixel.com/256/256/?c=' + pos" />
+        <v-list class="pt-0 pb-0" three-line>
+            <v-list-tile class="bot" avatar v-for="bot in bots" v-bind:key="bot.id" :to="'/bots/'+bot.id">
+                <v-list-tile-avatar size="55px" class="pt-0 mr-3">
+                    <img v-bind:src="'http:\/\/lorempixel.com/256/256/?c=' + bot.id" />
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                     <v-list-tile-title>
@@ -32,10 +32,10 @@ export default {
         // TODO: dynamic elements
         return {
             bots: [
-                {name: 'Pollr', author: 'Abalabahaha#1234', description: 'A bad moderation logging bot which does not work', starred: false, ratio: 10},
-                {name: 'Slash', author: 'FiniteReality#3210', description: 'Better than Pollr', starred: true, ratio: 50},
-                {name: 'R. Danny', author: 'Danny#0007', description: 'I am a robot.', starred: true, ratio: 80},
-                {name: 'rowboat', author: 'b1nzy#1337', description: 'Gently, I guess.', starred: false, ratio: 40}
+                {id: 1234, name: 'Pollr', author: 'Abalabahaha#1234', description: 'A bad moderation logging bot which does not work', starred: false, ratio: 10},
+                {id: 5678, name: 'Slash', author: 'FiniteReality#3210', description: 'Better than Pollr', starred: true, ratio: 50},
+                {id: 9012, name: 'R. Danny', author: 'Danny#0007', description: 'I am a robot.', starred: true, ratio: 80},
+                {id: 3456, name: 'rowboat', author: 'b1nzy#1337', description: 'Gently, I guess.', starred: false, ratio: 40}
             ]
         }
     },
@@ -46,6 +46,10 @@ export default {
 </script>
 
 <style>
+.list__tile--avatar .avatar .icon, .list__tile--avatar .avatar img {
+    width: inherit;
+    height: inherit;
+}
 .bot .ratio {
     width: 5rem;
     display: inline-block;
