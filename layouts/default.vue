@@ -2,7 +2,7 @@
     <v-app toolbar footer dark>
         <v-navigation-drawer persistent clipped v-model="sidebar.open" enable-resize-watcher>
             <v-list>
-                <v-list-tile>
+                <v-list-tile class="pt-3 pb-4">
                     <v-layout row class="user">
                         <v-flex xs3>
                             <v-avatar size="100%">
@@ -28,6 +28,25 @@
                             <span class="user-rank">Admin</span>
                         </v-flex>
                     </v-layout>
+                </v-list-tile>
+                <v-divider/>
+                <v-list-tile to="/">
+                    <v-list-tile-action>
+                        <v-icon>home</v-icon>
+                    </v-list-tile-action>
+                    Home
+                </v-list-tile>
+                <v-list-tile to="/">
+                    <v-list-tile-action>
+                        <v-icon>person_outline</v-icon>
+                    </v-list-tile-action>
+                    Bots
+                </v-list-tile>
+                <v-list-tile to="/">
+                    <v-list-tile-action>
+                        <v-icon>info_outline</v-icon>
+                    </v-list-tile-action>
+                    About
                 </v-list-tile>
             </v-list>
         </v-navigation-drawer>
@@ -63,7 +82,6 @@ export default {
 
 <style scoped>
 .user {
-    padding-top: 3rem;
     color: rgba(255, 255, 255, 0.5);
 }
 .user .user-info {
