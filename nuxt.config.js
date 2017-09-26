@@ -1,6 +1,7 @@
 module.exports = {
     build: {
-        vendor: ['vuetify']
+        vendor: ['vuetify'],
+        extractCSS: true
     },
     
     plugins: [
@@ -25,6 +26,6 @@ module.exports = {
     transition: 'slide-x-reverse-transition',
 
     css: [
-        'node_modules/vuetify/dist/vuetify.min.css'
+        '~/assets/main.styl'
     ]
 }

@@ -1,5 +1,5 @@
 <template>
-    <v-app toolbar footer dark>
+    <v-app light toolbar footer>
         <v-navigation-drawer persistent clipped v-model="sidebar.open" enable-resize-watcher>
             <v-list>
                 <v-list-tile class="pt-3 pb-4">
@@ -59,7 +59,7 @@
             <nuxt/>
         </main>
         <v-footer fixed>
-            <div class="grey--text text--darken-2">
+            <div>
                 maybe we should put some fancy git info here !!!
             </div>
             <v-spacer></v-spacer>

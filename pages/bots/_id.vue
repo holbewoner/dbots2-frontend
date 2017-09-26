@@ -47,12 +47,18 @@
                     </p>
                 </v-flex>
             </v-layout>
-            <v-speed-dial bottom right hover>
-                <v-btn slot="activator" fab hover>
-                    <v-icon>mode_edit</v-icon>
+            <v-speed-dial absolute bottom right>
+                <v-btn slot="activator" fab>
+                    <v-icon>settings</v-icon>
                     <v-icon>close</v-icon>
                 </v-btn>
-                <v-btn fab small>
+                <v-btn fab small class="red darken-2" v-tooltip:left="{html: 'Report'}">
+                    <v-icon>report</v-icon>
+                </v-btn>
+                <v-btn fab small v-tooltip:left="{html: 'Edit'}">
+                    <v-icon>mode_edit</v-icon>
+                </v-btn>
+                <v-btn fab small v-tooltip:left="{html: 'Review'}">
                     <v-icon>mode_comment</v-icon>
                 </v-btn>
             </v-speed-dial>
@@ -67,3 +73,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.speed-dial {
+    bottom: 3rem;
+    transform: initial;
+}
+</style>
