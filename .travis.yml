@@ -1,0 +1,16 @@
+language: js
+cache:
+  directories:
+    - node_modules
+node_js:
+  - "8"
+
+script: npm build
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: f7Mytv38FDUZuZRQCN95xcO1gehqX9TSqhlpTI1jUUje8AVsf+ze3HyL0Tzv0r0PFrYXGZDaxILG1dT8Idd+0S4hwoBj0Z+EiJhHQAZWDKwsOL8HFUfCUMti0nKmZ94bCIiYZYEbz+f9h3p7BTbt9hbGZ1hxELQCGMFXEP9ppS8BydqojJn8Hgmnom0CwMuUgmB/jKEVUeqKcBk9NsBDe9cOm401dw0s/oj5VVKLyNWAobuEVory8ihR9cVMerCFfV2rCEZ0DoCGKQ5PuOu7BKMHbybIqoGikJUS95EPVU2wMQtP5kQ0LtiMWY1HUYZ7QbNVfkJYUHtPkZigoZ+fJJJgIQZoZTeCKivHt21nWWlAd2dB/YRpqrFD7jkMVv+/oPYzI9qizW4k+PijefUnFDOmux9HEaUFWYriSfIpWDE1U/7QUlkBjCVdq0TRu1sLOUUiHD7n/JDXZxfxQF7s6qHsXU19oKXX5xPGK+5g23k16IeS/wfuibFy7JAy1mhfx6KM9WFhJPnUtHLWxiP7aJlgfFaCY+Q11BD989HVWceeDmDHs18yvxAMORuf8axd277fAxiu8usvQJGWj5mUMg5HafgOtGE7l7KvCQ0pKg1Ns1G/T3gwA34WTSxyugIUk0lIAVXAv/Bwu4sGWZgjYJjACjbezmD4r39QOtzZ1k8=
+  app: dbots-20
+  on:
+    branch: master
