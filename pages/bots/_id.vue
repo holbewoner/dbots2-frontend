@@ -12,7 +12,7 @@
                             <p>The world's best moderation bot.</p>
                         </v-flex>
                         <v-flex>
-                            <v-layout row>
+                            <v-layout row wrap>
                                 <v-flex>
                                     <div class="bottom">
                                         <v-chip class="blue lighten-3">Open-Source</v-chip>
@@ -31,14 +31,14 @@
                         </v-flex>
                     </v-layout>
                 </v-flex>
-                <v-flex xs1 ml-2>
+                <v-flex xs12 md1 ml-2>
                     <v-avatar size="100%">
                         <img src="http://lorempixel.com/256/256/"/>
                     </v-avatar>
                 </v-flex>
             </v-layout>
             <v-divider/>
-            <v-layout row class="pt-3">
+            <v-layout row class="pt-3 pb-3">
                 <v-flex>
                     <div class="title">Hello there!</div>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -85,6 +85,5 @@ export default {
 <style scoped>
 .speed-dial {
     bottom: 3rem;
-    transform: initial;
 }
 </style>

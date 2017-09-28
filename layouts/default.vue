@@ -20,7 +20,12 @@ export default {
     data() {
         return {
             sidebar: {
-                open: true
+                open: true,
+                links: [
+                    {to: '/users/me', icon: 'person_outline', title: 'Profile'},
+                    {to: '/users/me/settings', icon: 'settings', title: 'Settings'},
+                    {to: '/search', icon: 'search', title: 'Search Bots'}
+                ]
             }
         }
     },
