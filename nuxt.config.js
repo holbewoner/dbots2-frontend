@@ -3,7 +3,7 @@ module.exports = {
         vendor: ['vuetify'],
         extractCSS: true
     },
-    
+
     plugins: [
         '~/plugins/vuetify'
     ],

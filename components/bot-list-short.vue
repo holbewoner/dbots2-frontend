@@ -32,10 +32,11 @@ export default {
         // TODO: dynamic elements
         return {
             bots: [
-                {id: 1234, name: 'Pollr', author: 'Abalabahaha#1234', description: 'A bad moderation logging bot which does not work', starred: false, ratio: 10},
-                {id: 5678, name: 'Slash', author: 'FiniteReality#3210', description: 'Better than Pollr', starred: true, ratio: 50},
+                {id: 1234, name: 'Pollr', author: 'abalabahaha#9421', description: 'The world\'s best moderation bot.', starred: true, ratio: 95},
+                {id: 5678, name: 'Slash', author: 'FiniteReality#5734', description: 'Also the world\'s best moderation bot.', starred: true, ratio: 94.9999999999},
                 {id: 9012, name: 'R. Danny', author: 'Danny#0007', description: 'I am a robot.', starred: true, ratio: 80},
-                {id: 3456, name: 'rowboat', author: 'b1nzy#1337', description: 'Gently, I guess.', starred: false, ratio: 40}
+                {id: 3456, name: 'rowboat', author: 'b1nzy#1337', description: 'Gently, I guess.', starred: false, ratio: 40},
+                {id: 4321, name: '(ﾉ◕ヮ◕)ﾉ✧･ﾟ*✧spoo.py✧*･ﾟ✧ヽ(◕ヮ◕)ﾉ', author: 'spoopy🍡#0567', description: 'A dank bot.', starred: false, ratio: 100}
             ]
         }
     },

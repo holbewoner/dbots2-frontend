@@ -6,10 +6,10 @@
                     <v-layout column>
                         <v-flex>
                             <span class="display-2">Pollr</span>
-                            <span class="title grey--text text--darken-2"> by Abalabahaha#1234</span>
+                            <span class="title grey--text text--darken-2"> by abalabahaha#1234</span>
                         </v-flex>
                         <v-flex>
-                            <p>A bad moderation bot which doesn't work.</p>
+                            <p>The world's best moderation bot.</p>
                         </v-flex>
                         <v-flex>
                             <v-layout row>
@@ -17,8 +17,7 @@
                                     <div class="bottom">
                                         <v-chip class="blue lighten-3">Open-Source</v-chip>
                                         <v-chip class="blue-grey lighten-2">
-                                            <v-avatar>1K</v-avatar>
-                                            Guilds
+                                            ∞ guilds
                                         </v-chip>
                                         <v-chip class="green darken-1 white--text">Online</v-chip>
                                     </div>
@@ -42,24 +41,19 @@
             <v-layout row class="pt-3">
                 <v-flex>
                     <div class="title">Hello there!</div>
-                    <p>
-                        Bots are cool. Web dev is hard.
-                    </p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </v-flex>
             </v-layout>
-            <v-speed-dial absolute bottom right>
+            <v-speed-dial fixed bottom right>
                 <v-btn slot="activator" fab>
                     <v-icon>settings</v-icon>
                     <v-icon>close</v-icon>
                 </v-btn>
-                <v-btn fab small class="red darken-2" v-tooltip:left="{html: 'Report'}">
-                    <v-icon>report</v-icon>
-                </v-btn>
-                <v-btn fab small v-tooltip:left="{html: 'Edit'}">
-                    <v-icon>mode_edit</v-icon>
-                </v-btn>
-                <v-btn fab small v-tooltip:left="{html: 'Review'}">
-                    <v-icon>mode_comment</v-icon>
+                <v-btn fab small v-for="link in links" v-bind:key="link.to" v-bind:to="link.to" v-bind:class="link.class" v-tooltip:left="link.tooltip">
+                    <v-icon v-text="link.icon">error_outline</v-icon>
                 </v-btn>
             </v-speed-dial>
         </v-container>
@@ -68,6 +62,15 @@
 
 <script>
 export default {
+    data() {
+        return {
+            links: [
+                {to: './report', class: 'red darken-2', tooltip: {html: 'Report'}, icon: 'report'},
+                {to: './edit', tooltip: {html: 'Edit'}, icon: 'mode_edit'},
+                {to: './comment', tooltip: {html: 'Review'}, icon: 'mode_comment'}
+            ]
+        }
+    },
     validate ({ params }) {
         return /^[0-9]+$/.test(params.id)
     }
