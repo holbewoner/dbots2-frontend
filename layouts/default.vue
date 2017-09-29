@@ -8,12 +8,12 @@
         <main class="pb-3">
             <nuxt/>
         </main>
-        <footer />
+        <page-footer />
     </v-app>
 </template>
 
 <script>
-import Footer from '~/components/footer.vue'
+import PageFooter from '~/components/page-footer.vue'
 import NavigationDrawer from '~/components/navigation-drawer.vue'
 
 export default {
@@ -25,7 +25,7 @@ export default {
         }
     },
     components: {
-        Footer,
+        PageFooter,
         NavigationDrawer
     }
 }
