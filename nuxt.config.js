@@ -25,7 +25,7 @@ module.exports = {
         ]
     },
 
-    transition: 'slide-left',
+    transition: 'slide-x-reverse-transition',
 
     css: [
         '~/assets/main.styl'
