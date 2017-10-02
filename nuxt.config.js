@@ -25,11 +25,7 @@ module.exports = {
         ]
     },
 
-    transition(to, from) {
-        console.log(to, from)
-        if (!from) return 'slide-left'
-        return +to.query.page < +from.query.page ? 'slide-right' : 'slide-left'
-    }
+    transition: 'slide-left',
 
     css: [
         '~/assets/main.styl'
