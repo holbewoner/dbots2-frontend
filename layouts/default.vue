@@ -5,7 +5,7 @@
             <v-toolbar-side-icon @click.stop="sidebar.open = !sidebar.open"></v-toolbar-side-icon>
             <v-toolbar-title>some page title here probably</v-toolbar-title>
         </v-toolbar>
-        <main class="pb-3">
+        <main class="pb-4">
             <nuxt/>
         </main>
         <page-footer />

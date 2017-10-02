@@ -10,7 +10,7 @@
                     </v-flex>
                     <v-flex xs8 offset-xs1 class="user-info">
                         <v-menu offset-y :position-absolutely="true">
-                            <span class="user-name" slot="activator">Abalabahaha#1234 <v-icon>keyboard_arrow_down</v-icon></span>
+                            <span class="user-name" slot="activator">abalabahaha#1234 <v-icon>keyboard_arrow_down</v-icon></span>
                             <v-list>
                                 <v-list-tile to="/users/me">
                                     <v-list-tile-title>Profile</v-list-tile-title>
@@ -29,7 +29,7 @@
                 </v-layout>
             </v-list-tile>
             <v-divider/>
-            <v-list-tile to="/">
+            <v-list-tile to="/" class="home-nav-item">
                 <v-list-tile-action>
                     <v-icon>home</v-icon>
                 </v-list-tile-action>
@@ -62,7 +62,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .user {
     color: rgba(255, 255, 255, 0.5);
 }
@@ -70,7 +70,7 @@ export default {
     line-height: 1.2rem;
 }
 .user .user-name {
-    color: rgba(255, 255, 255, 1);
+    color: #ffffff;
     line-height: 2rem;
 }
 </style>

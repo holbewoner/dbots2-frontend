@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import BotListShort from '../components/bot-list-short.vue'
+import BotListShort from '~/components/bot-list-short.vue'
 
 export default {
   components: {
@@ -63,6 +63,6 @@ export default {
     }
 }
 .bot-lists section {
-    padding-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 </style>

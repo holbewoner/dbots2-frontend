@@ -21,4 +21,10 @@ export default {
     margin: 0;
     padding: 0 0.5rem;
 }
+.icon:hover {
+    color: rgba(255, 255, 255, 0.75);
+}
+.icon.icon--active {
+    color: #ffffff;
+}
 </style>

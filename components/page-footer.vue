@@ -11,11 +11,10 @@
 <script>
 import GitConfig from '~/config/git.json'
 
-let getGitRevision = function()
-{
+function getGitRevision() {
     let author = GitConfig.author ? GitConfig.author : 'Unknown'
     let sha1 = GitConfig.short_hash ? GitConfig.short_hash : GitConfig.hash.substr(0, 7)
-    
+
     if (GitConfig.tag !== undefined)
         return `${GitConfig.tag}@${sha1} by ${author}`
     else

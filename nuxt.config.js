@@ -25,7 +25,11 @@ module.exports = {
         ]
     },
 
-    transition: 'slide-x-reverse-transition',
+    transition(to, from) {
+        console.log(to, from)
+        if (!from) return 'slide-left'
+        return +to.query.page < +from.query.page ? 'slide-right' : 'slide-left'
+    }
 
     css: [
         '~/assets/main.styl'

@@ -1,2 +1,13 @@
 @require './themes/discord'
 @require '../node_modules/vuetify/src/stylus/main'
+@require './transitions'
+
+// Until I figure out how to stop "active route highlighting" on the Home link
+.navigation-drawer>.list .home-nav-item .list__tile--active,
+.navigation-drawer>.list .home-nav-item .list__tile--active>:first-child .icon {
+    color: $material-theme.text.theme;
+}
+.navigation-drawer>.list .home-nav-item .nuxt-link-exact-active,
+.navigation-drawer>.list .home-nav-item .nuxt-link-exact-active>:first-child .icon {
+    color: $theme.primary;
+}

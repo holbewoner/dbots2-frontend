@@ -14,17 +14,16 @@
                         Unknown
                     </v-list-tile-sub-title>
                 </v-list-tile-content>
-                <v-list-tile-action-text>
+                <v-list-tile-action>
                     <like-dislike-ratio v-bind:ratio="bot.ratio"></like-dislike-ratio>
-                    <v-icon v-html="bot.starred ? 'star' : 'star_border'">star_border</v-icon>
-                </v-list-tile-action-text>
+                </v-list-tile-action>
             </v-list-tile>
         </v-list>
     </v-card>
 </template>
 
 <script>
-import LikeDislikeRatio from './like-dislike-ratio.vue'
+import LikeDislikeRatio from '~/components/like-dislike-ratio.vue'
 
 export default {
     name: 'bot-list-short',

@@ -31,12 +31,26 @@
 </template>
 
 <script>
+import PageFooter from '~/components/page-footer.vue'
+import NavigationDrawer from '~/components/navigation-drawer.vue'
+
 export default {
     props: ['error'],
+    data() {
+        return {
+            sidebar: {
+                open: true
+            }
+        }
+    },
     head() {
         return {
             title: this.error.message || 'An error occured'
         }
+    },
+    components: {
+        PageFooter,
+        NavigationDrawer
     }
 }
 </script>
