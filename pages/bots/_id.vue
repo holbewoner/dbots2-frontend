@@ -17,7 +17,8 @@
                                     <div class="bottom">
                                         <v-chip class="blue lighten-3">Open-Source</v-chip>
                                         <v-chip class="blue-grey lighten-2">
-                                            ∞ guilds
+                                            <div class="avatar count blue-grey lighten-1">1M</div>
+                                            guilds
                                         </v-chip>
                                         <v-chip class="green darken-1 white--text">Online</v-chip>
                                     </div>
@@ -47,7 +48,7 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </v-flex>
             </v-layout>
-            <v-speed-dial fixed bottom right hover>
+            <v-speed-dial fixed bottom right>
                 <v-btn slot="activator" fab>
                     <v-icon>settings</v-icon>
                     <v-icon>close</v-icon>
@@ -62,11 +63,6 @@
 
 <script>
 export default {
-    head() {
-        return {
-            title: 'Pollr'
-        }
-    },
     data() {
         return {
             links: [
@@ -83,6 +79,14 @@ export default {
 </script>
 
 <style scoped>
+.chip .avatar.count {
+    border-radius: 16px;
+    min-width: 32px;
+    max-width: 80px;
+    width: auto !important;
+
+    padding: 0px 6px;
+}
 .speed-dial {
     bottom: 3rem;
 }

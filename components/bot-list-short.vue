@@ -16,7 +16,6 @@
                 </v-list-tile-content>
                 <v-list-tile-action-text>
                     <like-dislike-ratio v-bind:ratio="bot.ratio"></like-dislike-ratio>
-                    <v-icon v-html="bot.starred ? 'star' : 'star_border'">star_border</v-icon>
                 </v-list-tile-action-text>
             </v-list-tile>
         </v-list>
@@ -32,11 +31,11 @@ export default {
         // TODO: dynamic elements
         return {
             bots: [
-                {id: 1234, name: 'Pollr', author: 'abalabahaha#9421', description: 'The world\'s best moderation bot.', starred: true, ratio: 95},
-                {id: 5678, name: 'Slash', author: 'FiniteReality#5734', description: 'Also the world\'s best moderation bot.', starred: true, ratio: 94.9999999999},
-                {id: 9012, name: 'R. Danny', author: 'Danny#0007', description: 'I am a robot.', starred: true, ratio: 80},
-                {id: 3456, name: 'rowboat', author: 'b1nzy#1337', description: 'Gently, I guess.', starred: false, ratio: 40},
-                {id: 4321, name: '(ﾉ◕ヮ◕)ﾉ✧･ﾟ*✧spoo.py✧*･ﾟ✧ヽ(◕ヮ◕)ﾉ', author: 'spoopy🍡#0567', description: 'A dank bot.', starred: false, ratio: 100}
+                {id: 1234, name: 'Pollr', author: 'abalabahaha#9421', description: 'The world\'s best moderation bot.', ratio: 95},
+                {id: 5678, name: 'Slash', author: 'FiniteReality#5734', description: 'Also the world\'s best moderation bot.', ratio: 94.9999999999},
+                {id: 9012, name: 'R. Danny', author: 'Danny#0007', description: 'I am a robot.', ratio: 80},
+                {id: 3456, name: 'rowboat', author: 'b1nzy#1337', description: 'Gently, I guess.', ratio: 40},
+                {id: 4321, name: '(ﾉ◕ヮ◕)ﾉ✧･ﾟ*✧spoo.py✧*･ﾟ✧ヽ(◕ヮ◕)ﾉ', author: 'spoopy🍡#0567', description: 'A dank bot.', ratio: 100}
             ]
         }
     },
