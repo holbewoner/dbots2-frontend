@@ -1,7 +1,7 @@
 <template>
     <div class="like-dislike-ratio">
         <v-icon>thumb_up</v-icon>
-        <v-progress-linear class="ratio" v-model="ratio" height="2" color-front="green" color-back="red"></v-progress-linear>
+        <v-progress-linear v-model="ratio" height="2" color="green" background-color="red"></v-progress-linear>
         <v-icon>thumb_down</v-icon>
     </div>
 </template>
@@ -14,13 +14,19 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .like-dislike-ratio {
-    display: inline-block;
-    max-width: 10rem;
-    margin: 0;
-    padding: 0 0.5rem;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
 }
+.progress-linear {
+    min-width: 3rem;
+    max-width: 5rem;
+    margin: 1rem 1rem;
+}
+
 .icon:hover {
     color: rgba(255, 255, 255, 0.75);
 }

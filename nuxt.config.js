@@ -28,6 +28,7 @@ module.exports = {
     transition: 'slide-x-reverse-transition',
 
     css: [
-        '~/assets/main.styl'
+        '~/assets/vuetify.styl',
+        '~/assets/main.scss'
     ]
 }

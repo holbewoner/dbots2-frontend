@@ -5,10 +5,6 @@
                 <section>
                     <v-container class="hero">
                         <div class="text-xs-center">
-                            <br/> <!--temporary until i figure out how to CSS properly -->
-                            <br/>
-                            <br/>
-                            <br/>
                             <h1>Discord Bots</h1>
                             <p class="headline">Probably the neatest list of bots you&rsquo;ve seen.</p>
                         </div>
@@ -21,6 +17,20 @@
                 <v-layout row wrap>
                     <v-flex xs12 xl6>
                         <section>
+                            <h6>Spotlighted Bots</h6>
+
+                            <bot-list-short />
+                        </section>
+                    </v-flex>
+                    <v-flex xs12 xl6>
+                        <section>
+                            <h6>Most Liked Bots</h6>
+
+                            <bot-list-short />
+                        </section>
+                    </v-flex>
+                    <v-flex xs12 xl6>
+                        <section>
                             <h6>Newest Bots</h6>
 
                             <bot-list-short />
@@ -28,14 +38,7 @@
                     </v-flex>
                     <v-flex xs12 xl6>
                         <section>
-                            <h6>Most Favourited Bots</h6>
-
-                            <bot-list-short />
-                        </section>
-                    </v-flex>
-                    <v-flex xs12 xl6>
-                        <section>
-                            <h6>Spotlighted Bots</h6>
+                            <h6>Sponsored Bots (???)</h6>
 
                             <bot-list-short />
                         </section>

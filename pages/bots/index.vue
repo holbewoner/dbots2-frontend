@@ -2,18 +2,7 @@
     <v-container fluid>
         <v-layout row>
             <v-flex xs12>
-                <section>
-                    <v-container class="hero">
-                        <div class="text-xs-center">
-                            <br/> <!--temporary until i figure out how to CSS properly -->
-                            <br/>
-                            <br/>
-                            <br/>
-                            <h1>Bot List</h1>
-                            <p class="headline">A world-class list of bots.</p>
-                        </div>
-                    </v-container>
-                </section>
+                <p>search stuff to go here in the future</p>
             </v-flex>
         </v-layout>
         <v-layout row class="bot-list">

@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer persistent clipped v-model="sidebar.open" enable-resize-watcher>
+    <v-navigation-drawer persistent clipped app v-model="sidebar.open" enable-resize-watcher>
         <v-list>
             <v-list-tile class="pt-3 pb-4">
                 <v-layout row class="user">

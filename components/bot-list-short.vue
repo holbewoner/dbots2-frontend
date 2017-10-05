@@ -7,12 +7,12 @@
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                     <v-list-tile-title>
-                        <span v-text="bot.name">Unknown</span>
-                        <span class="grey--text text--darken-1"> by <span v-text="bot.author">Unknown</span></span>
+                        <span>>{{bot.name}}</span>
                     </v-list-tile-title>
-                    <v-list-tile-sub-title v-text="bot.description">
-                        Unknown
+                    <v-list-tile-sub-title>
+                        <span class="author grey--text text--darken-1">By {{bot.author}}</span>
                     </v-list-tile-sub-title>
+                    <v-list-tile-sub-title>{{bot.description}}</v-list-tile-sub-title>
                 </v-list-tile-content>
                 <v-list-tile-action>
                     <like-dislike-ratio v-bind:ratio="bot.ratio"></like-dislike-ratio>
@@ -45,15 +45,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.list__tile__action {
+    flex: 1 0 auto;
+}
 .list__tile--avatar .avatar .icon, .list__tile--avatar .avatar img {
     width: inherit;
     height: inherit;
-}
-.bot .ratio {
-    width: 5rem;
-    display: inline-block;
-    margin: 0;
-    padding: 0 0.5rem;
 }
 </style>

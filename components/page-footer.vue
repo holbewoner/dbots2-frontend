@@ -1,5 +1,5 @@
 <template>
-    <v-footer fixed>
+    <v-footer app>
         <div>
             Built from {{git_rev}}
         </div>

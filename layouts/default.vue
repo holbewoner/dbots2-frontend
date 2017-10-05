@@ -1,12 +1,14 @@
 <template>
     <v-app light toolbar footer>
         <navigation-drawer v-bind:sidebar="sidebar" />
-        <v-toolbar fixed>
+        <v-toolbar fixed app>
             <v-toolbar-side-icon @click.stop="sidebar.open = !sidebar.open"></v-toolbar-side-icon>
-            <v-toolbar-title>some page title here probably</v-toolbar-title>
+            <v-toolbar-title>some page title here probably (this is broken i know)</v-toolbar-title>
         </v-toolbar>
         <main class="pb-4">
-            <nuxt/>
+            <v-content>
+                <nuxt/>
+            </v-content>
         </main>
         <page-footer />
     </v-app>
