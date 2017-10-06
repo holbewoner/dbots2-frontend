@@ -3,10 +3,10 @@
         <v-layout row class="mb-3">
             <v-flex class="pr-3 flex--no-grow">
                 <v-avatar size="9rem">
-                    <img src="http://lorempixel.com/256/256/"/>
+                    <img v-bind:src="bot.avatar"/>
                 </v-avatar>
             </v-flex>
-            <v-flex xs12 md11>
+            <v-flex class="flex--grow">
                 <v-layout column>
                     <v-flex>
                         <v-layout row wrap>
@@ -14,25 +14,37 @@
                                 <span class="display-2">Pollr</span>
                                 <span class="title grey--text text--darken-2"> by abalabahaha#1234</span>
                             </v-flex>
-                            <v-flex>
-                                <div class="right">
-                                    <v-btn>Invite</v-btn>
-                                </div>
-                            </v-flex>
                         </v-layout>
                     </v-flex>
                     <v-flex>
                         <p>The world's best moderation bot.</p>
                     </v-flex>
                     <v-flex>
-                        <div class="bottom">
-                            <v-chip class="blue lighten-3">Open-Source</v-chip>
+                        <v-btn append to="invite">Invite</v-btn>
+                        <v-btn append to="stats">Stats</v-btn>
+                    </v-flex>
+                </v-layout>
+            </v-flex>
+            <v-flex>
+                <v-layout column>
+                    <v-flex>
+                        <v-layout row wrap class="flex--right">
+                            <like-dislike-ratio v-bind:likes="bot.likes" v-bind:dislikes="bot.dislikes"></like-dislike-ratio>
+                        </v-layout>
+                    </v-flex>
+                    <v-flex>
+                        <v-layout row wrap class="flex--right">
+                            <v-chip v-if="bot.source" class="blue lighten-3">Open source</v-chip>
                             <v-chip class="blue-grey lighten-2">
-                                <div class="avatar count blue-grey lighten-1">1M</div>
-                                guilds
+                                <div class="avatar count blue-grey lighten-1">{{bot.guilds}}</div> guilds
                             </v-chip>
                             <v-chip class="green darken-1 white--text">Online</v-chip>
-                        </div>
+                        </v-layout>
+                        <v-layout row wrap class="flex--right">
+                            <v-chip small disabled v-for="tag in bot.tags" v-bind:key="tag" class="grey darken-2">
+                                <v-avatar><v-icon>{{getTagIcon(tag)}}</v-icon></v-avatar> {{getTagName(tag)}}
+                            </v-chip>
+                        </v-layout>
                     </v-flex>
                 </v-layout>
             </v-flex>
@@ -82,7 +94,7 @@
                 <v-icon>close</v-icon>
             </v-btn>
             <v-tooltip left v-for="link in links" v-bind:key="link.to">
-                <v-btn fab small v-bind:to="link.to" v-bind:class="link.class" slot="activator">
+                <v-btn fab small append v-bind:to="link.to" v-bind:class="link.class" slot="activator">
                     <v-icon v-text="link.icon">error_outline</v-icon>
                 </v-btn>
                 <span v-text="link.tooltip">Unknown</span>
@@ -92,13 +104,39 @@
 </template>
 
 <script>
+import LikeDislikeRatio from '~/components/like-dislike-ratio.vue'
+
+// TODO: these tags should be moved into a separate component
+const tags = {
+    fun: {icon: 'casino', name: 'Fun'},
+    moderation: {icon: 'security', name: 'Moderation'},
+    games: {icon: 'videogame_asset', name: 'Games'}
+}
+
 export default {
+    methods: {
+        getTagIcon(tag) {
+            return (tags[tag] || {icon: 'error_outline', name: 'Unknown'}).icon
+        },
+        getTagName(tag) {
+            return (tags[tag] || {icon: 'error_outline', name: 'Unknown'}).name
+        }
+    },
     data() {
         return {
+            bot: {
+                avatar: 'http://lorempixel.com/256/256/',
+                online: true,
+                likes: 75,
+                dislikes: 25,
+                source: 'https://github.com/abalabahaha/dbots2-frontend',
+                guilds: 150,
+                tags: ['fun', 'moderation', 'games']
+            },
             links: [
-                {to: './report', class: 'red darken-2', tooltip: 'Report', icon: 'report'},
-                {to: './edit', tooltip: 'Edit', icon: 'mode_edit'},
-                {to: './comment', tooltip: 'Review', icon: 'mode_comment'}
+                {to: 'report', class: 'red darken-2', tooltip: 'Report', icon: 'report'},
+                {to: 'edit', tooltip: 'Edit', icon: 'mode_edit'},
+                {to: 'comment', tooltip: 'Review', icon: 'mode_comment'}
             ],
             prefix: "!",
             commands: {
@@ -130,6 +168,9 @@ export default {
     },
     validate ({ params }) {
         return /^[0-9]+$/.test(params.id)
+    },
+    components: {
+        LikeDislikeRatio
     }
 }
 </script>
@@ -143,6 +184,12 @@ export default {
 
     padding: 0px 6px;
 }
+.flex--right {
+    justify-content: flex-end;
+}
+/*.flex--grow {
+    flex-grow: 1;
+}*/
 .flex--no-grow {
     flex-grow: 0;
 }
