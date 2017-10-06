@@ -143,9 +143,6 @@ export default {
 
     padding: 0px 6px;
 }
-.speed-dial {
-    bottom: 3rem;
-}
 .flex--no-grow {
     flex-grow: 0;
 }

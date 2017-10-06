@@ -29,7 +29,7 @@
                 </v-layout>
             </v-list-tile>
             <v-divider/>
-            <v-list-tile to="/" class="home-nav-item">
+            <v-list-tile exact to="/">
                 <v-list-tile-action>
                     <v-icon>home</v-icon>
                 </v-list-tile-action>

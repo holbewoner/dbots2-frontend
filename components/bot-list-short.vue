@@ -14,7 +14,7 @@
                     </v-list-tile-sub-title>
                     <v-list-tile-sub-title>{{bot.description}}</v-list-tile-sub-title>
                 </v-list-tile-content>
-                <v-list-tile-action>
+                <v-list-tile-action class="hidden-xs-only">
                     <like-dislike-ratio v-bind:ratio="bot.ratio"></like-dislike-ratio>
                 </v-list-tile-action>
             </v-list-tile>
