@@ -19,7 +19,7 @@ export default {
     flex: 1 0 auto;
     display: flex;
     flex-direction: row;
-    justify-content: right;
+    justify-content: flex-end;
 }
 .progress-linear {
     min-width: 3rem;

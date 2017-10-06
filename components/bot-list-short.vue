@@ -7,7 +7,7 @@
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                     <v-list-tile-title>
-                        <span>>{{bot.name}}</span>
+                        <span>{{bot.name}}</span>
                     </v-list-tile-title>
                     <v-list-tile-sub-title>
                         <span class="author grey--text text--darken-1">By {{bot.author}}</span>
