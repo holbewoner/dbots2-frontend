@@ -1,7 +1,7 @@
 <template>
     <v-app light toolbar footer>
         <navigation-drawer v-bind:sidebar="sidebar" />
-        <v-toolbar app fixed>
+        <v-toolbar app fixed clipped-left>
             <v-toolbar-side-icon @click.stop="sidebar.open = !sidebar.open"></v-toolbar-side-icon>
             <v-toolbar-title>some page title here probably</v-toolbar-title>
         </v-toolbar>
