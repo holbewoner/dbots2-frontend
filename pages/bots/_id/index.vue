@@ -29,7 +29,7 @@
                 </v-layout>
             </v-flex>
             <v-flex>
-                <v-layout column>
+                <v-layout column class="flex--space-between">
                     <v-flex>
                         <v-layout row wrap class="flex--right">
                             <like-dislike-ratio v-bind:likes="bot.likes" v-bind:dislikes="bot.dislikes"></like-dislike-ratio>
@@ -194,14 +194,5 @@ export default {
     width: auto !important;
 
     padding: 0px 6px;
-}
-.flex--right {
-    justify-content: flex-end;
-}
-/*.flex--grow {
-    flex-grow: 1;
-}*/
-.flex--no-grow {
-    flex-grow: 0;
 }
 </style>

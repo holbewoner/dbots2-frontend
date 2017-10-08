@@ -6,11 +6,18 @@
     cursor: pointer;
 }
 
-.badge--status .badge__badge {
-    bottom: 2px;
-    right: 2px;
-    top: auto;
-    border: solid 5px #2c2f33 !important;
-    height: 32px;
-    width: 32px;
+.flex--right {
+    justify-content: flex-end;
+}
+.flex--space-between {
+    justify-content: space-between;
+}
+.flex--space-between.column {
+    height: 100%;
+}
+.flex--space-between.row {
+    width: 100%;
+}
+.flex--no-grow {
+    flex-grow: 0;
 }
