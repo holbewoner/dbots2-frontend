@@ -1,3 +1,16 @@
 .hero {
     padding: 10rem 0rem;
 }
+
+.chip--has-destination {
+    cursor: pointer;
+}
+
+.badge--status .badge__badge {
+    bottom: 2px;
+    right: 2px;
+    top: auto;
+    border: solid 5px #2c2f33 !important;
+    height: 32px;
+    width: 32px;
+}

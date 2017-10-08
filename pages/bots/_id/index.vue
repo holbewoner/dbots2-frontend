@@ -2,9 +2,12 @@
     <v-container fluid>
         <v-layout row class="mb-3">
             <v-flex class="pr-3 flex--no-grow">
-                <v-avatar size="9rem">
-                    <img v-bind:src="bot.avatar"/>
-                </v-avatar>
+                <v-badge color="green lighten-2" class="badge--status">
+                    <span slot="badge"></span>
+                    <v-avatar size="9rem">
+                        <img v-bind:src="bot.avatar"/>
+                    </v-avatar>
+                </v-badge>
             </v-flex>
             <v-flex class="flex--grow">
                 <v-layout column>
@@ -34,11 +37,10 @@
                     </v-flex>
                     <v-flex>
                         <v-layout row wrap class="flex--right">
-                            <v-chip v-if="bot.source" class="blue lighten-3">Open source</v-chip>
+                            <v-chip v-if="bot.source" class="blue lighten-3 chip--has-destination" @click="navigateTo(bot.source)">Open source</v-chip>
                             <v-chip class="blue-grey lighten-2">
                                 <div class="avatar count blue-grey lighten-1">{{bot.guilds}}</div> guilds
                             </v-chip>
-                            <v-chip class="green darken-1 white--text">Online</v-chip>
                         </v-layout>
                         <v-layout row wrap class="flex--right">
                             <v-chip small disabled v-for="tag in bot.tags" v-bind:key="tag" class="grey darken-2">
@@ -58,6 +60,12 @@
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             </v-flex>
+        </v-layout>
+        <v-layout row wrap>
+            <v-flex xs12>
+                <p class="headline">Commands</p>
+            </v-flex>
+
             <v-flex xs12 md4 v-for="(category, name) in commands" v-bind:key="name" class="px-2">
                 <v-card>
                     <v-list two-line>
@@ -115,6 +123,9 @@ const tags = {
 
 export default {
     methods: {
+        navigateTo(url) {
+            window.open(url);
+        },
         getTagIcon(tag) {
             return (tags[tag] || {icon: 'error_outline', name: 'Unknown'}).icon
         },
