@@ -1,11 +1,11 @@
 <template>
     <div class="like-dislike-ratio">
         <!-- i honestly can't find a better way to do this even though it looks like shit -->
-        <span class="likes">{{likes}}</span>
+        <span class="likes">{{likes | numeral('0a')}}</span>
         <v-icon>thumb_up</v-icon>
         <v-progress-linear v-model="ratio" height="2" color="green" background-color="red"></v-progress-linear>
         <v-icon>thumb_down</v-icon>
-        <span class="dislikes">{{dislikes}}</span>
+        <span class="dislikes">{{dislikes | numeral('0a')}}</span>
     </div>
 </template>
 

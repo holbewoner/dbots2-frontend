@@ -3,7 +3,7 @@
         <v-list class="pt-0 pb-0" three-line>
             <v-list-tile class="bot" avatar v-for="bot in bots" v-bind:key="bot.id" :to="'/bots/'+bot.id">
                 <v-list-tile-avatar size="55px" class="pt-0 mr-3">
-                    <img v-bind:src="'http:\/\/lorempixel.com/256/256/?c=' + bot.id" />
+                    <img :src="bot.avatar" />
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                     <v-list-tile-title>

@@ -1,5 +1,5 @@
 module.exports = {
-    //mode: 'spa', // SPA allows us to debug easier
+    mode: 'spa', // SPA allows us to debug easier
 
     build: {
         vendor: ['vuetify', 'axios'],
@@ -7,7 +7,8 @@ module.exports = {
     },
 
     plugins: [
-        '~/plugins/vuetify'
+        '~/plugins/vuetify',
+        '~/plugins/numeral'
     ],
 
     loading: false,
