@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import BotListShort from '~/components/bot-list-short.vue'
 
 export default {
