@@ -1,4 +1,6 @@
 module.exports = {
+    //mode: 'spa', // SPA allows us to debug easier
+
     build: {
         vendor: ['vuetify', 'axios'],
         extractCSS: true

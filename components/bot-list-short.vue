@@ -10,7 +10,7 @@
                         <span>{{bot.name}}</span>
                     </v-list-tile-title>
                     <v-list-tile-sub-title>
-                        <span class="author grey--text text--darken-1">By {{bot.author}}</span>
+                        <span class="author grey--text text--darken-1">By {{bot.author.name}}#{{bot.author.discrim}}</span>
                     </v-list-tile-sub-title>
                     <v-list-tile-sub-title>{{bot.description}}</v-list-tile-sub-title>
                 </v-list-tile-content>
@@ -23,22 +23,12 @@
 </template>
 
 <script>
+import axios from 'axios'
 import LikeDislikeRatio from '~/components/like-dislike-ratio.vue'
 
 export default {
     name: 'bot-list-short',
-    data() {
-        // TODO: dynamic elements
-        return {
-            bots: [
-                {id: 1234, name: 'Pollr', author: 'abalabahaha#9421', description: 'The world\'s best moderation bot.', starred: true, likes: 1, dislikes: 0},
-                {id: 5678, name: 'Slash', author: 'FiniteReality#5734', description: 'Also the world\'s best moderation bot.', starred: true, likes: 2, dislikes: 1},
-                {id: 9012, name: 'R. Danny', author: 'Danny#0007', description: 'I am a robot.', starred: true, likes: 3, dislikes: 5},
-                {id: 3456, name: 'rowboat', author: 'b1nzy#1337', description: 'Gently, I guess.', starred: false, likes: 1, dislikes: 1},
-                {id: 4321, name: '(ﾉ◕ヮ◕)ﾉ✧･ﾟ*✧spoo.py✧*･ﾟ✧ヽ(◕ヮ◕)ﾉ', author: 'spoopy🍡#0567', description: 'A dank bot.', starred: false, likes: 1, dislikes :2}
-            ]
-        }
-    },
+    props: ['bots'],
     components: {
         LikeDislikeRatio
     }
