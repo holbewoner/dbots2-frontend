@@ -39,7 +39,7 @@
                         <v-layout row wrap class="flex--right">
                             <v-chip v-if="bot.source" class="blue lighten-3 chip--has-destination" @click="navigateTo(bot.source)">Open source</v-chip>
                             <v-chip class="blue-grey lighten-2">
-                                <div class="avatar count blue-grey lighten-1">{{bot.guilds}}</div> guilds
+                                <div class="avatar count blue-grey lighten-1">{{bot.guilds | numeral('0a')}}</div> guilds
                             </v-chip>
                         </v-layout>
                         <v-layout row wrap class="flex--right">
