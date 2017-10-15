@@ -1,7 +1,7 @@
 <template>
     <v-navigation-drawer persistent clipped app v-model="sidebar.open" enable-resize-watcher>
         <v-list>
-            <v-list-tile class="pt-3 pb-4">
+            <v-list-tile class="mt-3 mb-4">
                 <v-layout row class="user">
                     <v-flex xs3>
                         <v-avatar size="100%">
@@ -9,7 +9,7 @@
                         </v-avatar>
                     </v-flex>
                     <v-flex xs8 offset-xs1 class="user-info">
-                        <v-menu offset-y :position-absolutely="true">
+                        <v-menu offset-y bottom :disabled="!sidebar.open" z-index="7">
                             <span class="user-name" slot="activator">abalabahaha#1234 <v-icon>keyboard_arrow_down</v-icon></span>
                             <v-list>
                                 <v-list-tile to="/users/me">
