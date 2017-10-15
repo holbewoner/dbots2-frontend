@@ -14,13 +14,13 @@
                     <v-flex>
                         <v-layout row wrap>
                             <v-flex>
-                                <span class="display-2">Pollr</span>
-                                <span class="title grey--text text--darken-2"> by abalabahaha#1234</span>
+                                <span class="display-2">{{bot.name}}</span>
+                                <span class="title grey--text text--darken-2"> by {{bot.author.name}}#{{bot.author.discrim}}</span>
                             </v-flex>
                         </v-layout>
                     </v-flex>
                     <v-flex>
-                        <p>The world's best moderation bot.</p>
+                        <p v-html="bot.description">Unknown description</p>
                     </v-flex>
                     <v-flex>
                         <v-btn append to="invite">Invite</v-btn>
@@ -66,26 +66,29 @@
                 <p class="headline">Commands</p>
             </v-flex>
 
-            <v-flex xs12 md4 v-for="(category, name) in commands" v-bind:key="name" class="px-2">
+            <v-flex xs12 md4 v-for="category in commands.categories" v-bind:key="category.name" class="px-2">
                 <v-card>
                     <v-list two-line>
                         <v-list-group>
                             <v-list-tile slot="item" @click="">
                                 <v-list-tile-action v-if="category.icon">
-                                    <v-icon>{{ category.icon }}</v-icon>
+                                    <v-icon>{{category.icon}}</v-icon>
                                 </v-list-tile-action>
                                 <v-list-tile-content>
-                                    <v-list-tile-title>{{ name }}</v-list-tile-title>
-                                    <v-list-tile-sub-title v-if="category.description">{{ category.description }}</v-list-tile-sub-title>
+                                    <v-list-tile-title>{{category.name}}</v-list-tile-title>
+                                    <v-list-tile-sub-title v-if="category.description">{{category.description}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                                 <v-list-tile-action>
                                     <v-icon>keyboard_arrow_down</v-icon>
                                 </v-list-tile-action>
                             </v-list-tile>
-                            <v-list-tile v-for="command in category.commands" v-bind:key="command.name" @click="">
+                            <v-list-tile class="list--no-pad-left" v-for="command in category.commands" v-bind:key="command.name" @click="">
+                                <v-list-tile-action v-if="command.icon">
+                                    <v-icon>{{command.icon}}</v-icon>
+                                </v-list-tile-action>
                                 <v-list-tile-content>
-                                    <v-list-tile-title>{{ prefix + command.name }}</v-list-tile-title>
-                                    <v-list-tile-sub-title v-if="command.description">{{ command.description }}</v-list-tile-sub-title>
+                                    <v-list-tile-title>{{activePrefix}}{{command.name}}</v-list-tile-title>
+                                    <v-list-tile-sub-title v-if="command.description">{{command.description}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
                                 <v-list-tile-action>
                                     <v-icon>info</v-icon>
@@ -112,6 +115,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import LikeDislikeRatio from '~/components/like-dislike-ratio.vue'
 
 // TODO: these tags should be moved into a separate component
@@ -133,48 +137,27 @@ export default {
             return (tags[tag] || {icon: 'error_outline', name: 'Unknown'}).name
         }
     },
+    computed: {
+        activePrefix() {
+            return this.commands.prefixes[0]
+        }
+    },
+    async asyncData({ params }) {
+        let { data: bot } = await axios.get(`http://dbots-20-backend.herokuapp.com/bots/${params.id}`)
+        let { data: commands } = await axios.get(`http://dbots-20-backend.herokuapp.com/bots/${params.id}/commands`)
+
+        return {
+            bot: bot,
+            commands: commands
+        }
+    },
     data() {
         return {
-            bot: {
-                avatar: 'http://lorempixel.com/256/256/',
-                online: true,
-                likes: 75,
-                dislikes: 25,
-                source: 'https://github.com/abalabahaha/dbots2-frontend',
-                guilds: 150,
-                tags: ['fun', 'moderation', 'games']
-            },
             links: [
                 {to: 'report', class: 'red darken-2', tooltip: 'Report', icon: 'report'},
                 {to: 'edit', tooltip: 'Edit', icon: 'mode_edit'},
                 {to: 'comment', tooltip: 'Review', icon: 'mode_comment'}
-            ],
-            prefix: "!",
-            commands: {
-                'Fun': {
-                    icon: 'casino',
-                    commands: [
-                        { name: 'roll', description: 'Roll some dice' },
-                        { name: 'unroll', description: 'Unroll some dice' }
-                    ]
-                },
-                'Moderation': {
-                    icon: 'security',
-                    description: 'Empower your mods!',
-                    commands: [
-                        { name: 'ban', description: 'Ban someone' },
-                        { name: 'bun', description: 'Cook a bun' }
-                    ]
-                },
-                'Games': {
-                    icon: 'videogame_asset',
-                    description: 'Distract your mods!',
-                    commands: [
-                        { name: 'guess', description: 'Guess that song!' },
-                        { name: 'count', description: 'Play the counting game!' }
-                    ]
-                }
-            }
+            ]
         }
     },
     validate ({ params }) {

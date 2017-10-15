@@ -1,6 +1,6 @@
 module.exports = {
     build: {
-        vendor: ['vuetify'],
+        vendor: ['vuetify', 'axios'],
         extractCSS: true
     },
 

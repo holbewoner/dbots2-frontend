@@ -21,3 +21,7 @@
 .flex--no-grow {
     flex-grow: 0;
 }
+
+.list--group .list--no-pad-left .list__tile {
+    padding-left: 16px;
+}
