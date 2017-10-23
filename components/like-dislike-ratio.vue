@@ -1,11 +1,11 @@
 <template>
     <div class="like-dislike-ratio">
         <!-- i honestly can't find a better way to do this even though it looks like shit -->
-        <span class="likes">{{likes | numeral('0a')}}</span>
-        <v-icon>thumb_up</v-icon>
+        <span class="likes">{{stored_likes | numeral('0a')}}</span>
+        <v-icon v-if="!no_controls" @click.prevent="toggleLike()" :class="{active: state == 1}">thumb_up</v-icon>
         <v-progress-linear v-model="ratio" height="2" color="green" background-color="red"></v-progress-linear>
-        <v-icon>thumb_down</v-icon>
-        <span class="dislikes">{{dislikes | numeral('0a')}}</span>
+        <v-icon v-if="!no_controls" @click.prevent="toggleDislike()" :class="{active: state == -1}">thumb_down</v-icon>
+        <span class="dislikes">{{stored_dislikes | numeral('0a')}}</span>
     </div>
 </template>
 
@@ -13,10 +13,50 @@
 export default {
     name: 'like-dislike-ratio',
 
-    props: ['likes', 'dislikes'],
+    props: ['likes', 'dislikes', 'no_controls'],
     computed: {
         ratio() {
-            return (this.likes / (this.likes + this.dislikes)) * 100;
+            return (this._likes / (this._likes + this._dislikes)) * 100
+        }
+    },
+    data() {
+        return {
+            state: 0, // -1 = dislike, 0 = neutral, 1 = like
+            stored_likes: this.likes,
+            stored_dislikes: this.dislikes
+        }
+    },
+    methods: {
+        // TODO: this should probably be cleaned up...
+        toggleLike() {
+            if (this.state == -1) {
+                this.state = 1
+                this.stored_dislikes -= 1
+                this.stored_likes += 1
+            } else if (this.state == 0) {
+                this.state = 1
+                this.stored_likes += 1
+            } else {
+                this.state = 0
+                this.stored_likes -= 1
+            }
+
+            this.$emit('onLike', this.state);
+        },
+        toggleDislike() {
+            if (this.state == 1) {
+                this.state = -1
+                this.stored_likes -= 1
+                this.stored_dislikes += 1
+            } else if (this.state == 0) {
+                this.state = -1
+                this.stored_dislikes += 1
+            } else {
+                this.state = 0
+                this.stored_dislikes -= 1
+            }
+
+            this.$emit('onDislike', this.state);
         }
     }
 }
@@ -49,10 +89,17 @@ export default {
     direction: ltr;
 }
 
+.icon {
+    cursor: pointer;
+}
+
 .icon:hover {
+    color: rgba(255, 255, 255, 0.65);
+}
+.icon.active {
     color: rgba(255, 255, 255, 0.75);
 }
-.icon.icon--active {
+/*.icon.icon--active {
     color: #ffffff;
-}
+}*/
 </style>
