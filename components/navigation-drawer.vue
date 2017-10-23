@@ -29,23 +29,11 @@
                 </v-layout>
             </v-list-tile>
             <v-divider/>
-            <v-list-tile exact to="/">
+            <v-list-tile v-for="link in links" exact :to="link.link" :key="link.link">
                 <v-list-tile-action>
-                    <v-icon>home</v-icon>
+                    <v-icon>{{link.icon}}</v-icon>
                 </v-list-tile-action>
-                Home
-            </v-list-tile>
-            <v-list-tile to="/bots">
-                <v-list-tile-action>
-                    <v-icon>person_outline</v-icon>
-                </v-list-tile-action>
-                Bots
-            </v-list-tile>
-            <v-list-tile to="/about">
-                <v-list-tile-action>
-                    <v-icon>info_outline</v-icon>
-                </v-list-tile-action>
-                About
+                {{link.title}}
             </v-list-tile>
         </v-list>
     </v-navigation-drawer>
@@ -57,6 +45,11 @@ export default {
     props: ['sidebar'],
     data() {
         return {
+            links: [
+                {icon: 'home', title: 'Home', link: '/'},
+                {icon: 'person_outline', title: 'Bots', link: '/bots'},
+                {icon: 'info_outline', title: 'About', link: '/about'}
+            ]
         }
     }
 }

@@ -2,9 +2,9 @@
     <div class="like-dislike-ratio">
         <!-- i honestly can't find a better way to do this even though it looks like shit -->
         <span class="likes">{{stored_likes | numeral('0a')}}</span>
-        <v-icon v-if="!no_controls" @click.prevent="toggleLike()" :class="{active: state == 1}">thumb_up</v-icon>
+        <v-icon @click.prevent="toggleLike()" :class="{disabled: !this.controls, active: state == 1}">thumb_up</v-icon>
         <v-progress-linear v-model="ratio" height="2" color="green" background-color="red"></v-progress-linear>
-        <v-icon v-if="!no_controls" @click.prevent="toggleDislike()" :class="{active: state == -1}">thumb_down</v-icon>
+        <v-icon @click.prevent="toggleDislike()" :class="{disabled: !this.controls, active: state == -1}">thumb_down</v-icon>
         <span class="dislikes">{{stored_dislikes | numeral('0a')}}</span>
     </div>
 </template>
@@ -13,7 +13,7 @@
 export default {
     name: 'like-dislike-ratio',
 
-    props: ['likes', 'dislikes', 'no_controls'],
+    props: ['likes', 'dislikes', 'controls'],
     computed: {
         ratio() {
             return (this._likes / (this._likes + this._dislikes)) * 100
@@ -29,34 +29,38 @@ export default {
     methods: {
         // TODO: this should probably be cleaned up...
         toggleLike() {
-            if (this.state == -1) {
-                this.state = 1
-                this.stored_dislikes -= 1
-                this.stored_likes += 1
-            } else if (this.state == 0) {
-                this.state = 1
-                this.stored_likes += 1
-            } else {
-                this.state = 0
-                this.stored_likes -= 1
-            }
+            if (this.controls) {
+                if (this.state == -1) {
+                    this.state = 1
+                    this.stored_dislikes -= 1
+                    this.stored_likes += 1
+                } else if (this.state == 0) {
+                    this.state = 1
+                    this.stored_likes += 1
+                } else {
+                    this.state = 0
+                    this.stored_likes -= 1
+                }
 
-            this.$emit('onLike', this.state);
+                this.$emit('onLike', this.state);
+            }
         },
         toggleDislike() {
-            if (this.state == 1) {
-                this.state = -1
-                this.stored_likes -= 1
-                this.stored_dislikes += 1
-            } else if (this.state == 0) {
-                this.state = -1
-                this.stored_dislikes += 1
-            } else {
-                this.state = 0
-                this.stored_dislikes -= 1
-            }
+            if (this.controls) {
+                if (this.state == 1) {
+                    this.state = -1
+                    this.stored_likes -= 1
+                    this.stored_dislikes += 1
+                } else if (this.state == 0) {
+                    this.state = -1
+                    this.stored_dislikes += 1
+                } else {
+                    this.state = 0
+                    this.stored_dislikes -= 1
+                }
 
-            this.$emit('onDislike', this.state);
+                this.$emit('onDislike', this.state);
+            }
         }
     }
 }
@@ -69,6 +73,7 @@ export default {
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
+    cursor: default;
 }
 .progress-linear {
     max-width: 5rem;
@@ -91,6 +96,11 @@ export default {
 
 .icon {
     cursor: pointer;
+}
+
+.icon.disabled {
+    color: rgba(255, 255, 255, 0.35) !important;
+    cursor: default !important;
 }
 
 .icon:hover {
