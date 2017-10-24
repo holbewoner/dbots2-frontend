@@ -54,12 +54,12 @@
         <v-divider class="mb-3" />
         <v-layout row wrap class="mb-3">
             <!-- TODO: this should return markdown! -->
-            <v-flex xs12 v-html="bot.description">
+            <v-flex xs12 v-html="parseMarkdown(bot.description)">
             </v-flex>
         </v-layout>
         <v-layout row wrap>
             <v-flex xs12>
-                <p class="headline">Commands</p>
+                <p class="display-2">Commands</p>
             </v-flex>
 
             <v-flex xs12 md4 v-for="category in commands.categories" v-bind:key="category.name" class="px-2">
@@ -111,6 +111,7 @@
 </template>
 
 <script>
+import marked from '~/plugins/marked'
 import axios from 'axios'
 import LikeDislikeRatio from '~/components/like-dislike-ratio.vue'
 
@@ -131,6 +132,9 @@ export default {
         },
         getTagName(tag) {
             return (tags[tag] || {icon: 'error_outline', name: 'Unknown'}).name
+        },
+        parseMarkdown(markdown) {
+            return marked(markdown)
         }
     },
     computed: {

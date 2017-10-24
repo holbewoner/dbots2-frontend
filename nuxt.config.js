@@ -2,7 +2,7 @@ module.exports = {
     mode: 'spa', // SPA allows us to debug easier
 
     build: {
-        vendor: ['vuetify', 'axios'],
+        vendor: ['vuetify', 'axios', 'marked'],
         extractCSS: true
     },
 

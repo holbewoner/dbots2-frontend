@@ -1,5 +1,12 @@
-.hero {
-    padding: 10rem 0rem;
+.card.warning {
+    display: inline-block;
+    max-width: 50%;
+    min-width: 20%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+.card.warning :last-child {
+    margin-bottom: 0;
 }
 
 .chip--has-destination {
@@ -20,6 +27,10 @@
 }
 .flex--no-grow {
     flex-grow: 0;
+}
+
+.hero {
+    padding: 10rem 0rem;
 }
 
 .list--group .list--no-pad-left .list__tile {

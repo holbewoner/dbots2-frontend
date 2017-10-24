@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "css-loader": "^0.28.7",
+    "marked": "^0.3.6",
     "node-sass": "^4.5.3",
     "numeral": "^2.0.6",
     "nuxt": "^1.0.0-rc11",
