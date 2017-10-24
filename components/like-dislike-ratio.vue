@@ -16,7 +16,7 @@ export default {
     props: ['likes', 'dislikes', 'controls'],
     computed: {
         ratio() {
-            return (this._likes / (this._likes + this._dislikes)) * 100
+            return (this.stored_likes / (this.stored_likes + this.stored_dislikes)) * 100
         }
     },
     data() {
