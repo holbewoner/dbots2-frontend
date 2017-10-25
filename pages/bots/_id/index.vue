@@ -122,6 +122,15 @@ const tags = {
     games: {icon: 'videogame_asset', name: 'Games'}
 }
 
+// Handily stolen from stack overflow:
+// https://stackoverflow.com/a/34890276/6878862
+const groupBy = function(xs, key) {
+    return xs.reduce(function(rv, x) {
+        (rv[x[key]] = rv[x[key]] || []).push(x)
+        return rv
+    }, {})
+}
+
 export default {
     methods: {
         navigateTo(url) {
@@ -145,6 +154,11 @@ export default {
     async asyncData({ params }) {
         let { data: bot } = await axios.get(`http://dbots-20-backend.herokuapp.com/bots/${params.id}`)
         let { data: commands } = await axios.get(`http://dbots-20-backend.herokuapp.com/bots/${params.id}/commands`)
+
+        let groupedCommands = groupBy(commands.commands, 'group')
+        for (let key in groupedCommands) {
+            commands.categories[key].commands = groupedCommands[key]
+        }
 
         return {
             bot: bot,

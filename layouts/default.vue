@@ -36,4 +36,21 @@ export default {
         NavigationDrawer
     }
 }
+
+const message = "bots.discord.pw"
+let position = 0;
+document.addEventListener("keypress", (e) => {
+    let key = e.keyCode ? e.keyCode : e.which
+    if (message.charCodeAt(position) == key) {
+        position = position + 1
+    } else {
+        position = 0
+    }
+
+    if (position == message.length) {
+        window.open("https://bots.discord.pw/intro.mp4")
+        position = 0
+    }
+});
+
 </script>
