@@ -5,7 +5,8 @@
                 <v-badge color="green lighten-2" class="badge--status">
                     <span slot="badge"></span>
                     <v-avatar size="9rem">
-                        <img v-bind:src="bot.avatar"/>
+                        <img v-if="bot.icon" :src="'https://cdn.discordapp.com/app-icons/'+bot.id+'/'+bot.icon+'.jpg'" />
+                        <img v-else src="http://lorempixel.com/256/256/people" />
                     </v-avatar>
                 </v-badge>
             </v-flex>
@@ -15,7 +16,7 @@
                         <v-layout row wrap>
                             <v-flex>
                                 <span class="display-2">{{bot.name}}</span>
-                                <span class="title grey--text text--darken-2"> by {{bot.author.name}}#{{bot.author.discrim}}</span>
+                                <span class="title grey--text text--darken-2"> by <span v-for="owner in bot.owners">{{ owner.username }}#{{ owner.discriminator }}</span></span>
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -31,18 +32,18 @@
                 <v-layout column class="flex--space-between">
                     <v-flex>
                         <v-layout row wrap class="flex--right">
-                            <like-dislike-ratio v-bind:likes="bot.likes" v-bind:dislikes="bot.dislikes"></like-dislike-ratio>
+                            <like-dislike-ratio :likes="bot.likes" :dislikes="bot.dislikes"></like-dislike-ratio>
                         </v-layout>
                     </v-flex>
                     <v-flex>
                         <v-layout row wrap class="flex--right">
                             <v-chip v-if="bot.source" class="blue lighten-3 chip--has-destination" @click="navigateTo(bot.source)">Open source</v-chip>
                             <v-chip class="blue-grey lighten-2">
-                                <div class="avatar count blue-grey lighten-1">{{bot.guilds | numeral('0a')}}</div> guilds
+                                <div class="avatar count blue-grey lighten-1">{{bot.stats.guild_count | numeral('0a')}}</div> guilds
                             </v-chip>
                         </v-layout>
                         <v-layout row wrap class="flex--right">
-                            <v-chip small disabled v-for="tag in bot.tags" v-bind:key="tag" class="grey darken-2">
+                            <v-chip small disabled v-for="tag in bot.tags" :key="tag" class="grey darken-2">
                                 <v-avatar><v-icon>{{getTagIcon(tag)}}</v-icon></v-avatar> {{getTagName(tag)}}
                             </v-chip>
                         </v-layout>
@@ -59,11 +60,11 @@
             </v-tabs-bar>
             <v-divider class="mb-3" />
             <v-tabs-items>
-                <v-tabs-content id="info" v-html="parseMarkdown(bot.description)">
+                <v-tabs-content id="info" v-html="parseDescription(bot.description)">
                 </v-tabs-content>
                 <v-tabs-content id="commands">
                     <v-layout row>
-                        <v-flex xs12 md4 v-for="category in commands.categories" v-bind:key="category.name" class="px-2">
+                        <v-flex xs12 md4 v-for="category in commands.categories" :key="category.name" class="px-2">
                             <v-card>
                                 <v-list two-line>
                                     <v-list-group>
@@ -79,7 +80,7 @@
                                                 <v-icon>keyboard_arrow_down</v-icon>
                                             </v-list-tile-action>
                                         </v-list-tile>
-                                        <v-list-tile class="list--no-pad-left" v-for="command in category.commands" v-bind:key="command.name">
+                                        <v-list-tile class="list--no-pad-left" v-for="command in category.commands" :key="command.name">
                                             <v-list-tile-action v-if="command.icon">
                                                 <v-icon>{{command.icon}}</v-icon>
                                             </v-list-tile-action>
@@ -118,8 +119,8 @@
                 <v-icon>settings</v-icon>
                 <v-icon>close</v-icon>
             </v-btn>
-            <v-tooltip left v-for="link in links" v-bind:key="link.to">
-                <v-btn fab small append v-bind:to="link.to" v-bind:class="link.class" slot="activator">
+            <v-tooltip left v-for="link in links" :key="link.to">
+                <v-btn fab small append :to="link.to" :class="link.class" slot="activator">
                     <v-icon v-text="link.icon">error_outline</v-icon>
                 </v-btn>
                 <span v-text="link.tooltip">Unknown</span>
@@ -137,7 +138,8 @@ import LikeDislikeRatio from '~/components/like-dislike-ratio.vue'
 const tags = {
     fun: {icon: 'casino', name: 'Fun'},
     moderation: {icon: 'security', name: 'Moderation'},
-    games: {icon: 'videogame_asset', name: 'Games'}
+    games: {icon: 'videogame_asset', name: 'Games'},
+    testing: {icon: 'bug_report', name: 'Testing'}
 }
 
 // Handily stolen from stack overflow:
@@ -161,10 +163,12 @@ export default {
             return (tags[tag] || {icon: 'error_outline', name: 'Unknown'}).name
         },
         displayInfo(command) {
-
         },
-        parseMarkdown(markdown) {
-            return marked(markdown)
+        parseDescription(description) {
+            if(!description) {
+                return "No description given."
+            }
+            return marked(description)
         }
     },
     computed: {
@@ -173,17 +177,11 @@ export default {
         }
     },
     async asyncData({ params }) {
-        let { data: bot } = await axios.get(`http://dbots-20-backend.herokuapp.com/bots/${params.id}`)
-        let { data: commands } = await axios.get(`http://dbots-20-backend.herokuapp.com/bots/${params.id}/commands`)
-
-        let groupedCommands = groupBy(commands.commands, 'group')
-        for (let key in groupedCommands) {
-            commands.categories[key].commands = groupedCommands[key]
-        }
+        let { data: bot } = await axios.get(`http://127.0.0.1:4001/api/v1/bots/${params.id}`)
 
         return {
             bot: bot,
-            commands: commands
+            commands: bot.command_categories
         }
     },
     data() {

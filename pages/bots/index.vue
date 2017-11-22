@@ -25,7 +25,7 @@ export default {
     },
     async asyncData({ params }) {
         // TODO: come up with a better name for this route
-        let {data: bots} = await axios.get(`http://dbots-20-backend.herokuapp.com/bots/?filter=top`)
+        let {data: bots} = await axios.get(`http://127.0.0.1:4001/api/v1/bots?limit=20`)
 
         return {
             bots: bots

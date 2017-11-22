@@ -5,15 +5,12 @@
                 <section>
                     <v-container>
                         <h2>About</h2>
-                        <p>
-                            Discord bots is a memey page.
-                        </p>
+                        <p>DBots2 when</p>
                         <h3>Fun Facts</h3>
                         <blockquote>
                             <ul>
-                                <li>This page only exists to prevent a 404.</li>
-                                <li>Finite is a better web dev than Abal.</li>
-                                <li>I don&rsquo;t actually know what I&rsquo;m doing.</li>
+                                <li>This page used to only exist to prevent a 404.</li>
+                                <li>Finite doesn&rsquo;t actually know what he&rsquo;s doing.</li>
                             </ul>
                         </blockquote>
                     </v-container>

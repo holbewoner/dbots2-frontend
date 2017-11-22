@@ -1,21 +1,29 @@
 <template>
     <v-card>
+        <v-card v-if="!bots.length">
+            <v-card-title>
+                <div>
+                    <span>No bots found</span>
+                </div>
+            </v-card-title>
+        </v-card>
         <v-list class="pt-0 pb-0" three-line>
             <v-list-tile class="bot" avatar v-for="bot in bots" v-bind:key="bot.id" :to="'/bots/'+bot.id">
                 <v-list-tile-avatar size="55px" class="pt-0 mr-3">
-                    <img :src="bot.avatar" />
+                    <img v-if="bot.icon" :src="'https://cdn.discordapp.com/app-icons/'+bot.id+'/'+bot.icon+'.jpg'" />
+                    <img v-else src="http://lorempixel.com/256/256/people" />
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                     <v-list-tile-title>
-                        <span>{{bot.name}}</span>
+                        <span>{{ bot.name }}</span>
                     </v-list-tile-title>
                     <v-list-tile-sub-title>
-                        <span class="author grey--text text--darken-1">By {{bot.author.name}}#{{bot.author.discrim}}</span>
+                        <span class="author grey--text text--darken-1">By <span v-for="owner in bot.owners">{{ owner.username }}#{{ owner.discriminator }}</span></span>
                     </v-list-tile-sub-title>
-                    <v-list-tile-sub-title>{{bot.description}}</v-list-tile-sub-title>
+                    <v-list-tile-sub-title>{{ bot.description }}</v-list-tile-sub-title>
                 </v-list-tile-content>
                 <v-list-tile-action class="hidden-xs-only pr-3">
-                    <like-dislike-ratio v-bind:likes="bot.likes" v-bind:dislikes="bot.dislikes"></like-dislike-ratio>
+                    <like-dislike-ratio v-bind:likes="bot.stats.likes" v-bind:dislikes="bot.stats.dislikes"></like-dislike-ratio>
                 </v-list-tile-action>
             </v-list-tile>
         </v-list>

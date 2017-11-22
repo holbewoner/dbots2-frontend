@@ -17,30 +17,30 @@
                 <v-layout row wrap>
                     <v-flex xs12 xl6>
                         <section>
-                            <h6>Spotlighted Bots</h6>
+                            <h6>Featured Bots</h6>
 
-                            <bot-list-short :bots="bots" />
+                            <bot-list-short :bots="featuredBots" />
                         </section>
                     </v-flex>
                     <v-flex xs12 xl6>
                         <section>
                             <h6>Most Liked Bots</h6>
 
-                            <bot-list-short :bots="bots" />
+                            <bot-list-short :bots="rankedBots" />
                         </section>
                     </v-flex>
                     <v-flex xs12 xl6>
                         <section>
                             <h6>Newest Bots</h6>
 
-                            <bot-list-short :bots="bots" />
+                            <bot-list-short :bots="newestBots" />
                         </section>
                     </v-flex>
                     <v-flex xs12 xl6>
                         <section>
-                            <h6>Sponsored Bots (???)</h6>
+                            <h6>Sponsored Bots</h6>
 
-                            <bot-list-short :bots="bots" />
+                            <bot-list-short :bots="sponsoredBots" />
                         </section>
                     </v-flex>
                 </v-layout>
@@ -58,11 +58,28 @@ export default {
       BotListShort
   },
   async asyncData({ params }) {
+        const limit = 5;
+
         // TODO: come up with a better name for this route
-        let {data: bots} = await axios.get(`http://dbots-20-backend.herokuapp.com/bots/?filter=top`)
+        let allBots = await Promise.all([
+            axios.get(`http://127.0.0.1:4001/api/v1/bots?featured=true&limit=${limit}`),
+            axios.get(`http://127.0.0.1:4001/api/v1/bots?sort=-rating&limit=${limit}`),
+            axios.get(`http://127.0.0.1:4001/api/v1/bots?sort=-date&limit=${limit}`),
+            axios.get(`http://127.0.0.1:4001/api/v1/bots?sponsored=true&limit=${limit}`)
+        ]);
+
+        console.log({
+            featuredBots: allBots[0].data,
+            rankedBots: allBots[1].data,
+            newestBots: allBots[2].data,
+            sponsoredBots: allBots[3].data
+        })
 
         return {
-            bots: bots
+            featuredBots: allBots[0].data,
+            rankedBots: allBots[1].data,
+            newestBots: allBots[2].data,
+            sponsoredBots: allBots[3].data
         }
     },
 }

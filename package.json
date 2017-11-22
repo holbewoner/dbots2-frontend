@@ -17,24 +17,24 @@
     "axios": "^0.16.2",
     "css-loader": "^0.28.7",
     "marked": "^0.3.6",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.7.2",
     "numeral": "^2.0.6",
-    "nuxt": "^1.0.0-rc11",
+    "nuxt": "^1.0.0-rc9",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
-    "vuetify": "^0.16.1"
+    "vuetify": "^0.16.9"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
-    "eslint": "^4.3.0",
+    "eslint": "^4.11.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-html": "^3.1.1",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-node": "^5.1.1",
-    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1"
   }
 }
