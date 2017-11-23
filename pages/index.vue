@@ -3,12 +3,10 @@
         <v-layout row>
             <v-flex xs12>
                 <section>
-                    <v-container class="hero">
-                        <div class="text-xs-center">
-                            <h1>Discord Bots</h1>
-                            <p class="headline">Probably the neatest list of bots you&rsquo;ve seen.</p>
-                        </div>
-                    </v-container>
+                    <div class="text-xs-center">
+                        <h1>Discord Bots</h1>
+                        <p class="headline">Probably the neatest list of bots you&rsquo;ve seen.</p>
+                    </div>
                 </section>
             </v-flex>
         </v-layout>
@@ -50,22 +48,18 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '~/plugins/axios'
 import BotListShort from '~/components/bot-list-short.vue'
 
 export default {
-  components: {
-      BotListShort
-  },
-  async asyncData({ params }) {
+    async asyncData({ params }) {
         const limit = 5;
 
-        // TODO: come up with a better name for this route
         let allBots = await Promise.all([
-            axios.get(`https://totally-not-bots.discord.pw/api/v1/bots?featured=true&limit=${limit}`),
-            axios.get(`https://totally-not-bots.discord.pw/api/v1/bots?sort=-rating&limit=${limit}`),
-            axios.get(`https://totally-not-bots.discord.pw/api/v1/bots?sort=-date&limit=${limit}`),
-            axios.get(`https://totally-not-bots.discord.pw/api/v1/bots?sponsored=true&limit=${limit}`)
+            axios.get(`/bots?featured=true&limit=${limit}`),
+            axios.get(`/bots?sort=-rating&limit=${limit}`),
+            axios.get(`/bots?sort=-date&limit=${limit}`),
+            axios.get(`/bots?sponsored=true&limit=${limit}`)
         ]);
 
         return {
@@ -75,6 +69,9 @@ export default {
             sponsoredBots: allBots[3].data
         }
     },
+    components: {
+        BotListShort
+    }
 }
 </script>
 

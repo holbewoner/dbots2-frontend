@@ -43,4 +43,4 @@ marked.setOptions({
     renderer: renderer
 })
 
-export default marked;
+export default marked

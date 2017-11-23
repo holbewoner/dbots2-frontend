@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '~/plugins/axios'
 import BotListShort from '~/components/bot-list-short.vue'
 
 export default {
@@ -24,10 +24,7 @@ export default {
         BotListShort
     },
     async asyncData({ params }) {
-        // TODO: come up with a better name for this route
-        let {data: bots} = await axios.get(`https://totally-not-bots.discord.pw/api/v1/bots?limit=20`)
-
-        console.log(bots[0].stats)
+        let {data: bots} = await axios.get(`/bots?limit=20`)
 
         return {
             bots: bots
