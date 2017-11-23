@@ -1,11 +1,11 @@
 <template>
     <div class="like-dislike-ratio">
         <!-- i honestly can't find a better way to do this even though it looks like shit -->
-        <span class="likes">{{stored_likes | numeral('0a')}}</span>
+        <span class="likes">{{storedLikes | numeral('0a')}}</span>
         <v-icon @click.prevent="toggleLike()" :class="{disabled: !this.controls, active: state == 1}">thumb_up</v-icon>
         <v-progress-linear v-model="ratio" height="2" color="green" background-color="red"></v-progress-linear>
         <v-icon @click.prevent="toggleDislike()" :class="{disabled: !this.controls, active: state == -1}">thumb_down</v-icon>
-        <span class="dislikes">{{stored_dislikes | numeral('0a')}}</span>
+        <span class="dislikes">{{storedDislikes | numeral('0a')}}</span>
     </div>
 </template>
 
@@ -16,14 +16,14 @@ export default {
     props: ['likes', 'dislikes', 'controls'],
     computed: {
         ratio() {
-            return (this.stored_likes / (this.stored_likes + this.stored_dislikes)) * 100
+            return (this.storedLikes / (this.storedLikes + this.storedDislikes)) * 100
         }
     },
     data() {
         return {
             state: 0, // -1 = dislike, 0 = neutral, 1 = like
-            stored_likes: this.likes,
-            stored_dislikes: this.dislikes
+            storedLikes: this.likes,
+            storedDislikes: this.dislikes
         }
     },
     methods: {
@@ -32,14 +32,14 @@ export default {
             if (this.controls) {
                 if (this.state == -1) {
                     this.state = 1
-                    this.stored_dislikes -= 1
-                    this.stored_likes += 1
+                    this.storedDislikes -= 1
+                    this.storedLikes += 1
                 } else if (this.state == 0) {
                     this.state = 1
-                    this.stored_likes += 1
+                    this.storedLikes += 1
                 } else {
                     this.state = 0
-                    this.stored_likes -= 1
+                    this.storedLikes -= 1
                 }
 
                 this.$emit('onLike', this.state);
@@ -49,14 +49,14 @@ export default {
             if (this.controls) {
                 if (this.state == 1) {
                     this.state = -1
-                    this.stored_likes -= 1
-                    this.stored_dislikes += 1
+                    this.storedLikes -= 1
+                    this.storedDislikes += 1
                 } else if (this.state == 0) {
                     this.state = -1
-                    this.stored_dislikes += 1
+                    this.storedDislikes += 1
                 } else {
                     this.state = 0
-                    this.stored_dislikes -= 1
+                    this.storedDislikes -= 1
                 }
 
                 this.$emit('onDislike', this.state);

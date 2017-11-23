@@ -7,7 +7,7 @@
                         <div class="text-xs-center">
                             <h1>404</h1>
                             <p class="headline">Page not found</p>
-                            <v-btn color="primary" to="/">Home</v-btn>
+                            <v-btn primary to="/">Home</v-btn>
                         </div>
                     </v-container>
                 </section>

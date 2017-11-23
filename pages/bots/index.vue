@@ -25,7 +25,9 @@ export default {
     },
     async asyncData({ params }) {
         // TODO: come up with a better name for this route
-        let {data: bots} = await axios.get(`http://127.0.0.1:4001/api/v1/bots?limit=20`)
+        let {data: bots} = await axios.get(`https://totally-not-bots.discord.pw/api/v1/bots?limit=20`)
+
+        console.log(bots[0].stats)
 
         return {
             bots: bots

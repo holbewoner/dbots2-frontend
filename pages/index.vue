@@ -62,18 +62,11 @@ export default {
 
         // TODO: come up with a better name for this route
         let allBots = await Promise.all([
-            axios.get(`http://127.0.0.1:4001/api/v1/bots?featured=true&limit=${limit}`),
-            axios.get(`http://127.0.0.1:4001/api/v1/bots?sort=-rating&limit=${limit}`),
-            axios.get(`http://127.0.0.1:4001/api/v1/bots?sort=-date&limit=${limit}`),
-            axios.get(`http://127.0.0.1:4001/api/v1/bots?sponsored=true&limit=${limit}`)
+            axios.get(`https://totally-not-bots.discord.pw/api/v1/bots?featured=true&limit=${limit}`),
+            axios.get(`https://totally-not-bots.discord.pw/api/v1/bots?sort=-rating&limit=${limit}`),
+            axios.get(`https://totally-not-bots.discord.pw/api/v1/bots?sort=-date&limit=${limit}`),
+            axios.get(`https://totally-not-bots.discord.pw/api/v1/bots?sponsored=true&limit=${limit}`)
         ]);
-
-        console.log({
-            featuredBots: allBots[0].data,
-            rankedBots: allBots[1].data,
-            newestBots: allBots[2].data,
-            sponsoredBots: allBots[3].data
-        })
 
         return {
             featuredBots: allBots[0].data,

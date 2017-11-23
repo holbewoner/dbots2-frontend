@@ -16,12 +16,12 @@
                         <v-layout row wrap>
                             <v-flex>
                                 <span class="display-2">{{bot.name}}</span>
-                                <span class="title grey--text text--darken-2"> by <span v-for="owner in bot.owners">{{ owner.username }}#{{ owner.discriminator }}</span></span>
+                                <span class="title grey--text text--darken-2"> by <span v-for="(owner, index) in bot.owners"><span v-if="index > 0">, </span>{{ owner.username }}#{{ owner.discriminator }}</span></span>
                             </v-flex>
                         </v-layout>
                     </v-flex>
                     <v-flex>
-                        <p v-html="bot.description_short">Unknown description</p>
+                        <p v-html="bot.tagline">No description provided</p>
                     </v-flex>
                     <v-flex>
                         <v-btn append to="invite">Invite</v-btn>
@@ -32,7 +32,7 @@
                 <v-layout column class="flex--space-between">
                     <v-flex>
                         <v-layout row wrap class="flex--right">
-                            <like-dislike-ratio :likes="bot.likes" :dislikes="bot.dislikes"></like-dislike-ratio>
+                            <like-dislike-ratio :likes="bot.stats.likes" :dislikes="bot.stats.dislikes"></like-dislike-ratio>
                         </v-layout>
                     </v-flex>
                     <v-flex>
@@ -60,11 +60,10 @@
             </v-tabs-bar>
             <v-divider class="mb-3" />
             <v-tabs-items>
-                <v-tabs-content id="info" v-html="parseDescription(bot.description)">
-                </v-tabs-content>
+                <v-tabs-content id="info" v-html="parseDescription(bot.description)">No description provided</v-tabs-content>
                 <v-tabs-content id="commands">
                     <v-layout row>
-                        <v-flex xs12 md4 v-for="category in commands.categories" :key="category.name" class="px-2">
+                        <v-flex xs12 md4 v-for="category in categories" :key="category.name" class="px-2">
                             <v-card>
                                 <v-list two-line>
                                     <v-list-group>
@@ -74,30 +73,28 @@
                                             </v-list-tile-action>
                                             <v-list-tile-content>
                                                 <v-list-tile-title>{{category.name}}</v-list-tile-title>
-                                                <v-list-tile-sub-title v-if="category.description">{{category.description}}</v-list-tile-sub-title>
+                                                <v-list-tile-sub-title v-if="category.tagline">{{category.tagline}}</v-list-tile-sub-title>
                                             </v-list-tile-content>
                                             <v-list-tile-action>
                                                 <v-icon>keyboard_arrow_down</v-icon>
                                             </v-list-tile-action>
                                         </v-list-tile>
-                                        <v-list-tile class="list--no-pad-left" v-for="command in category.commands" :key="command.name">
+                                        <v-list-tile class="list--no-pad-left" v-for="command in category.commands" :key="command.command">
                                             <v-list-tile-action v-if="command.icon">
                                                 <v-icon>{{command.icon}}</v-icon>
                                             </v-list-tile-action>
                                             <v-list-tile-content>
-                                                <v-list-tile-title>{{activePrefix}}{{command.name}}</v-list-tile-title>
-                                                <v-list-tile-sub-title v-if="command.description">{{command.description}}</v-list-tile-sub-title>
+                                                <v-list-tile-title>{{activePrefix}}{{command.command}}</v-list-tile-title>
+                                                <v-list-tile-sub-title v-if="command.tagline">{{command.tagline}}</v-list-tile-sub-title>
                                             </v-list-tile-content>
                                             <v-list-tile-action>
                                                 <v-dialog width="600px">
                                                     <v-icon class="clickable" slot="activator">info</v-icon>
                                                     <v-card>
                                                         <v-card-title>
-                                                            <span class="headline">{{activePrefix}}{{command.name}}</span>
+                                                            <span class="headline">{{activePrefix}}{{command.command}}</span>
                                                         </v-card-title>
-                                                        <v-card-text>
-                                                            {{command.description}}
-                                                        </v-card-text>
+                                                        <v-card-text v-html="parseDescription(command.description)">No description provided</v-card-text>
                                                     </v-card>
                                                 </v-dialog>
                                             </v-list-tile-action>
@@ -109,7 +106,7 @@
                     </v-layout>
                 </v-tabs-content>
                 <v-tabs-content id="stats">
-                    <p class="display-3">TODO: stats</p>
+                    <p>TODO: stats</p>
                 </v-tabs-content>
             </v-tabs-items>
         </v-tabs>
@@ -173,20 +170,34 @@ export default {
     },
     computed: {
         activePrefix() {
-            return this.commands.prefixes[0]
+            return this.bot.prefix
         }
     },
     async asyncData({ params }) {
-        let { data: bot } = await axios.get(`http://127.0.0.1:4001/api/v1/bots/${params.id}`)
+        let { data: bot } = await axios.get(`https://totally-not-bots.discord.pw/api/v1/bots/${params.id}`)
+
+        var categories = {
+            uncategorized: {
+                commands: {},
+                name: "uncategorized"
+            }
+        };
+        for(let category of bot.command_categories) {
+            categories[category.name] = category;
+            category.commands = {};
+        }
+        for(let command of bot.commands) {
+            let category = categories[command.category_name] || categories.uncategorized;
+            category.commands[command.command] = command;
+        }
 
         return {
             bot: bot,
-            commands: bot.command_categories
+            categories: categories
         }
     },
     data() {
         return {
-            scroll: 0,
             links: [
                 {to: 'report', class: 'red darken-2', tooltip: 'Report', icon: 'report'},
                 {to: 'edit', tooltip: 'Edit', icon: 'mode_edit'},
