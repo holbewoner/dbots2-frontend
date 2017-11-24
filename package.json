@@ -24,7 +24,8 @@
     "style-loader": "^0.18.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
-    "vuetify": "^0.16.9"
+    "vuetify": "^0.16.9",
+    "vuex-persistedstate": "^2.4.2"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

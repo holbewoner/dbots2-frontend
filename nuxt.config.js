@@ -8,10 +8,21 @@ module.exports = {
 
     plugins: [
         '~/plugins/vuetify',
-        '~/plugins/numeral'
+        '~/plugins/numeral',
+        { src: '~/plugins/localStorage.js', ssr: false }
     ],
 
-    loading: false,
+    loading: {
+        color: "#2c2f33",
+        duration: 5000,
+        failedColor: "red",
+        height: "5px"
+    },
+    loadingIndicator: {
+        name: "three-bounce",
+        color: "#7289da",
+        background: "#2c2f33"
+    },
 
     head: {
         titleTemplate: (x) => (x) ? `${x} - Discord Bots` : 'Discord Bots',
