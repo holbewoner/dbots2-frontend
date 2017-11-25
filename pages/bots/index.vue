@@ -95,7 +95,7 @@ export default {
                 return
             }
 
-            var id = Math.random()
+            var id = Date.now() + Math.random()
             this.loading = id
             axios.get(`/bots`, {
                 params: {
