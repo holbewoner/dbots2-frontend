@@ -40,17 +40,17 @@ export default {
             return this.$store.dispatch("auth/getCurrentUser").then(() => {
                 this.status = "Success!"
                 if(this.$route.query.state && this.$route.query.state.startsWith("path:")) {
-                    this.$router.replace(this.$route.query.state.substring(5) || "/")
+                    this.$router.push(this.$route.query.state.substring(5) || "/")
                 } else {
-                    this.$router.replace("/")
+                    this.$router.push("/")
                 }
             })
         }).catch((err) => {
+            console.log(err)
             if(err.response && err.response.data && err.response.data.error) {
                 this.status = err.response.data.error
             } else {
                 this.status = "Unknown authorization code error"
-                console.log(err)
             }
         })
     }

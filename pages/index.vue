@@ -1,7 +1,7 @@
 <template>
     <v-container fluid>
         <v-layout row>
-            <v-flex xs12>
+            <v-flex x16 xs12>
                 <section>
                     <div class="text-xs-center">
                         <h1>Discord Bots</h1>
@@ -11,30 +11,30 @@
             </v-flex>
         </v-layout>
         <v-layout row class="bot-lists">
-            <v-flex xs12 md10 offset-md1>
+            <v-flex x16 xs12 md10 offset-md1>
                 <v-layout row wrap>
-                    <v-flex xs12 xl6>
+                    <v-flex x16 xs12 class="mb-3">
                         <section>
                             <h6>Featured Bots</h6>
 
                             <bot-list-short :bots="featuredBots" />
                         </section>
                     </v-flex>
-                    <v-flex xs12 xl6>
+                    <v-flex x16 xs12 class="mb-3">
                         <section>
                             <h6>Most Liked Bots</h6>
 
                             <bot-list-short :bots="rankedBots" />
                         </section>
                     </v-flex>
-                    <v-flex xs12 xl6>
+                    <v-flex x16 xs12 class="mb-3">
                         <section>
                             <h6>Newest Bots</h6>
 
                             <bot-list-short :bots="newestBots" />
                         </section>
                     </v-flex>
-                    <v-flex xs12 xl6>
+                    <v-flex x16 xs12 class="mb-3">
                         <section>
                             <h6>Sponsored Bots</h6>
 
@@ -80,8 +80,5 @@ export default {
     .bot-lists .flex.xl6 {
         padding-right: 1rem;
     }
-}
-.bot-lists section {
-    margin-bottom: 1rem;
 }
 </style>

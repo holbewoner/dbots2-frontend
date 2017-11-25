@@ -96,8 +96,10 @@ import marked from '~/plugins/marked'
 // TODO: these tags should be moved into a separate component
 const tags = {
     fun: {icon: 'casino', name: 'Fun'},
-    moderation: {icon: 'security', name: 'Moderation'},
     games: {icon: 'videogame_asset', name: 'Games'},
+    moderation: {icon: 'security', name: 'Moderation'},
+    music: {icon: 'music_note', name: 'Music'},
+    utility: {icon: 'build', name: 'Utility'},
     testing: {icon: 'bug_report', name: 'Testing'}
 }
 
@@ -107,7 +109,11 @@ export default {
             window.open(url);
         },
         getTagData(name) {
-            return (tags[name] || {icon: 'error_outline', name: 'Unknown'})
+            if(!tags[name]) {
+                console.log("Unknown tag:", name)
+                return {icon: 'error_outline', name: 'Unknown'}
+            }
+            return tags[name]
         },
         parseDescription(description) {
             if(!description) {
