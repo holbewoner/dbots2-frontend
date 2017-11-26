@@ -1,14 +1,14 @@
 <template>
     <v-container fluid>
         <v-layout row wrap class="bot-list">
-            <v-flex x16 xs12 md10 offset-md1 class="mb-3">
+            <v-flex xs12 md10 offset-md1 class="mb-3">
                 <v-alert v-if="error" color="error" icon="warning" transition="scale-transition" v-model="error" v-text="error"></v-alert>
                 <v-card>
-                    <v-toolbar dark>
-                        <v-text-field dark hide-details single-line prepend-icon="search" v-model="search" :error="!!error" @input="debounceSearch()"></v-text-field>
+                    <v-toolbar color="secondary">
+                        <v-text-field hide-details single-line prepend-icon="search" v-model="search" :error="!!error" @input="debounceSearch()"></v-text-field>
                         <v-toolbar-side-icon class="hidden-md-and-up"></v-toolbar-side-icon>
-                        <v-btn icon :disabled="!!loading" @click="debounceSearch()">
-                            <v-progress-circular v-if="loading > 1" indeterminate color="primary"></v-progress-circular>
+                        <v-btn icon :disabled="loading" @click="debounceSearch()">
+                            <v-progress-circular v-if="loading" indeterminate color="primary"></v-progress-circular>
                             <v-icon v-else>arrow_forward</v-icon>
                         </v-btn>
                         <v-btn v-if="refreshable" icon @click="debounceSearch()">
@@ -51,11 +51,18 @@
                     </v-toolbar>
                 </v-card>
             </v-flex>
-            <v-flex x16 xs12 md10 offset-md1 class="mb-3">
+            <v-flex xs12 md10 offset-md1 class="mb-3">
                 <v-card>
-                <section>
-                    <bot-list-short :bots="bots" />
-                </section>
+                    <section>
+                        <bot-list-short :bots="bots" />
+                    </section>
+                </v-card>
+            </v-flex>
+            <v-flex xs12 md10 offset-md1 class="mb-3">
+                <v-card>
+                    <v-card-text class="text-xs-center">
+                        <v-pagination :length="totalPages" v-model="page" @input="searchBots(true)"></v-pagination>
+                    </v-card-text>
                 </v-card>
             </v-flex>
         </v-layout>
@@ -63,6 +70,7 @@
 </template>
 
 <script>
+import Axios from 'axios'
 import axios from '~/plugins/axios'
 import BotListShort from '~/components/bot-list-short.vue'
 
@@ -75,14 +83,45 @@ const TAG_LIST = [
     { icon: "build", text: "Utility", value: "utility" },
     { icon: "bug_report", text: "Testing", value: "testing" }
 ]
+const LIBRARY_LIST = "disco discord-rs discord.io discord.js Discord.Net discord.py Discord4J discordcr DiscordGo Discordia Discordie discordrb DSharpPlus Eris Javacord JDA Nostrum RestCord serenity SwiftDiscord Sword Custom".split(" ")
+
+const defaultQuery = {
+    limit: 20,
+    page: 1
+}
 
 export default {
     computed: {
         refreshable() {
             return this.sort && !!~this.sort.indexOf("random")
+        },
+        totalPages() {
+            return Math.max(Math.ceil(this.totalBots / this.limit), 1)
         }
     },
     methods: {
+        buildQuery() {
+            var query = {}
+            if(this.library) {
+                query.library = this.library
+            }
+            if(this.limit && this.limit !== defaultQuery.limit) {
+                query.limit = this.limit
+            }
+            if(this.page && this.page !== defaultQuery.page) {
+                query.page = this.page
+            }
+            if(this.search) {
+                query.search = this.search
+            }
+            if(this.sort && this.sort.length > 0) {
+                query.sort = this.sort.join(",")
+            }
+            if(this.tags && this.sort.length > 0) {
+                query.tags = this.tags.join(",")
+            }
+            return query
+        },
         debounceSearch() {
             if(this.inputDebounce) {
                 clearTimeout(this.inputDebounce)
@@ -90,26 +129,41 @@ export default {
             }
             this.inputDebounce = setTimeout(() => this.searchBots(), 250)
         },
-        searchBots() {
-            if(this.loading) {
-                return
+        searchBots(force) {
+            if(this.cancelSource) {
+                console.log("Cancelling existing search")
+                this.cancelSource.cancel("Searching again")
             }
 
-            var id = Date.now() + Math.random()
-            this.loading = id
+            this.cancelSource = Axios.CancelToken.source();
+
+            this.loading = true
+            var query = this.buildQuery()
             axios.get(`/bots`, {
-                params: {
-                    library: this.library,
-                    limit: this.limit,
-                    page: this.page,
-                    search: this.search,
-                    sort: this.sort.join(","),
-                    tags: this.tags.join(",")
-                }
+                params: query,
+                cancelToken: this.cancelSource.token
             }).then((res) => {
+                this.cancelSource = null
                 this.error = null
                 this.bots = res.data
+
+                this.totalBots = +res.headers["x-total"] || 0
+                this.loading = false
+
+                // Bug in nuxt.js <= 1.0-rc11
+                // Updating the route query will force-refresh asyncData()
+                // This breaks things like pagination on /bots
+                // https://github.com/nuxt/nuxt.js/issues/1255
+                // TODO uncomment at next nuxt release
+                // this.$router.push({
+                //     query: query
+                // })
             }).catch((err) => {
+                this.cancelSource = null
+                if(Axios.isCancel(err)) {
+                    return
+                }
+
                 console.log(err && err.response && err.response.data || err)
                 if(err.response && err.response.data && err.response.data.error) {
                     if(Array.isArray(err.response.data.error)) {
@@ -120,10 +174,7 @@ export default {
                 } else {
                     this.error = "Unknown API error"
                 }
-            }).then(() => {
-                if(this.loading === id) {
-                    this.loading = false
-                }
+                this.loading = false
             })
         }
     },
@@ -133,8 +184,15 @@ export default {
             error: null,
             loading: true,
 
+            cancelSource: null,
             inputDebounce: setTimeout(() => this.loading = false, 1000),
 
+            // library: params.library || "",
+            // limit: +params.limit || 20,
+            // page: +params.page || 1,
+            // search: params.search || "",
+            // sort: params.sort ? params.sort.split(",") : [],
+            // tags: params.tags ? params.tags.split(",") : [],
             library: "",
             limit: 20,
             page: 1,
@@ -142,9 +200,11 @@ export default {
             sort: [],
             tags: [],
 
+            totalBots: 0,
+
             sortList: [
-                { text: "Date (newest)", value: "date" },
-                { text: "Date (oldest)", value: "-date" },
+                { text: "Date (newest)", value: "-date" },
+                { text: "Date (oldest)", value: "date" },
                 { text: "Name (A-Z)", value: "name" },
                 { text: "Name (Z-A)", value: "-name" },
                 { text: "Rating (highest)", value: "-rating" },
@@ -152,24 +212,46 @@ export default {
                 { text: "Random", value: "random" }
             ],
             tagList: TAG_LIST,
-            libraryList: "disco discord-rs discord.io discord.js Discord.Net discord.py Discord4J discordcr DiscordGo Discordia Discordie discordrb DSharpPlus Eris Javacord JDA Nostrum RestCord serenity SwiftDiscord Sword Custom".split(" ")
+            libraryList: LIBRARY_LIST
         }
     },
-    async asyncData({ params }) {
-        let {data: bots} = await axios.get(`/bots`, {
+    async asyncData({ query }) {
+        console.log("Recalculating")
+        let res = await axios.get(`/bots`, {
             params: {
-                library: params.library,
-                limit: params.limit,
-                page: params.page,
-                search: params.search,
-                sort: params.sort,
-                tags: params.tags
+                library: query.library || undefined,
+                limit: query.limit || undefined,
+                page: query.page || undefined,
+                search: query.search || undefined,
+                sort: query.sort || undefined,
+                tags: query.tags || undefined
             }
         })
 
-        return {
-            bots: bots
+        var data = {
+            bots: res.data,
+
+            totalBots: +res.headers["x-total"] || 0
         }
+        if(query.library) {
+            data.library = query.library
+        }
+        if(+query.limit) {
+            data.limit = +query.limit
+        }
+        if(+query.page) {
+            data.page = +query.page
+        }
+        if(query.search) {
+            data.search = query.search
+        }
+        if(query.sort) {
+            data.sort = query.sort.split(",")
+        }
+        if(query.tags) {
+            data.tags = query.tags.split(",")
+        }
+        return data
     },
     components: {
         BotListShort

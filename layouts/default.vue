@@ -1,15 +1,13 @@
 <template>
-    <v-app light toolbar footer>
-        <navigation-drawer v-bind:sidebar="sidebar" />
-        <v-toolbar fixed app clipped-left>
+    <v-app dark toolbar footer>
+        <navigation-drawer :sidebar="sidebar" />
+        <v-toolbar app fixed clipped-left>
             <v-toolbar-side-icon @click.stop="sidebar.open = !sidebar.open"></v-toolbar-side-icon>
             <v-toolbar-title>{{ navTitle }}</v-toolbar-title>
         </v-toolbar>
-        <main class="pb-4">
-            <v-content>
-                <nuxt/>
-            </v-content>
-        </main>
+        <v-content>
+            <nuxt />
+        </v-content>
         <page-footer />
     </v-app>
 </template>
@@ -22,12 +20,7 @@ export default {
     data() {
         return {
             sidebar: {
-                open: true,
-                links: [
-                    {to: '/users/me', icon: 'person_outline', title: 'Profile'},
-                    {to: '/users/me/settings', icon: 'settings', title: 'Settings'},
-                    {to: '/search', icon: 'search', title: 'Search Bots'}
-                ]
+                open: true
             },
             navTitle: "Discord Bots"
         }

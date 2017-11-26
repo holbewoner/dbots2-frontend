@@ -1,13 +1,9 @@
 <template>
     <v-container fluid>
         <v-layout row>
-            <v-flex xs12>
-                <section>
-                    <div class="text-xs-center">
-                        <h1>Logging in...</h1>
-                        <p v-if="status" class="headline">{{ status }}</p>
-                    </div>
-                </section>
+            <v-flex xs12 class="text-xs-center">
+                <h2 class="display-3">Logging in...</h2>
+                <p v-if="status" class="headline">{{ status }}</p>
             </v-flex>
         </v-layout>
     </v-container>

@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-card v-if="!bots.length">
+        <v-card v-if="!bots || !bots.length">
             <v-card-title>
                 <div>
                     <span>No bots found</span>

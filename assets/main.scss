@@ -29,14 +29,19 @@
     flex-grow: 0;
 }
 
-.hero {
-    padding: 10rem 0rem;
-}
-
 .list--group .list--no-pad-left .list__tile {
     padding-left: 16px;
 }
 
-.tabs__bar {
-    background-color: #2c2f33;
+.badge--status .badge__badge {
+    bottom: 2px;
+    right: 2px;
+    top: auto;
+    border: solid 5px #2c2f33 !important;
+    height: 32px;
+    width: 32px;
+}
+
+.pagination__item {
+    outline: none;
 }

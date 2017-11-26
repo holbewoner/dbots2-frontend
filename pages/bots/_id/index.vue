@@ -53,7 +53,7 @@
                 </v-layout>
             </v-flex>
         </v-layout>
-        <v-tabs dark :scrollable="false">
+        <v-tabs :scrollable="false">
             <v-tabs-bar>
                 <v-tabs-item ripple href="#info">Info</v-tabs-item>
                 <v-tabs-item v-if="bot.commands && bot.commands.length" ripple href="#commands">Commands</v-tabs-item>
@@ -156,7 +156,6 @@ export default {
     data() {
         return {
             links: [
-                {to: 'report', class: 'red darken-2', tooltip: 'Report', icon: 'report'},
                 {to: 'edit', tooltip: 'Edit', icon: 'mode_edit'},
                 {to: 'comment', tooltip: 'Review', icon: 'mode_comment'}
             ]

@@ -1,47 +1,31 @@
 <template>
     <v-container fluid>
         <v-layout row>
-            <v-flex x16 xs12>
-                <section>
-                    <div class="text-xs-center">
-                        <h1>Discord Bots</h1>
-                        <p class="headline">Probably the neatest list of bots you&rsquo;ve seen.</p>
-                    </div>
-                </section>
+            <v-flex xs12 class="text-xs-center">
+                <h2 class="display-3">Discord Bots</h2>
+                <p class="headline">Probably the neatest list of bots you&rsquo;ve seen.</p>
             </v-flex>
         </v-layout>
-        <v-layout row class="bot-lists">
-            <v-flex x16 xs12 md10 offset-md1>
-                <v-layout row wrap>
-                    <v-flex x16 xs12 class="mb-3">
-                        <section>
-                            <h6>Featured Bots</h6>
+        <v-layout row wrap class="bot-lists">
+            <v-flex xs12 md10 offset-md1 class="mb-3">
+                <h6 class="title">Featured Bots</h6>
 
-                            <bot-list-short :bots="featuredBots" />
-                        </section>
-                    </v-flex>
-                    <v-flex x16 xs12 class="mb-3">
-                        <section>
-                            <h6>Most Liked Bots</h6>
+                <bot-list-short :bots="featuredBots" />
+            </v-flex>
+            <v-flex xs12 md10 offset-md1 class="mb-3">
+                <h6 class="title">Most Liked Bots</h6>
 
-                            <bot-list-short :bots="rankedBots" />
-                        </section>
-                    </v-flex>
-                    <v-flex x16 xs12 class="mb-3">
-                        <section>
-                            <h6>Newest Bots</h6>
+                <bot-list-short :bots="rankedBots" />
+            </v-flex>
+            <v-flex xs12 md10 offset-md1 class="mb-3">
+                <h6 class="title">Newest Bots</h6>
 
-                            <bot-list-short :bots="newestBots" />
-                        </section>
-                    </v-flex>
-                    <v-flex x16 xs12 class="mb-3">
-                        <section>
-                            <h6>Sponsored Bots</h6>
+                <bot-list-short :bots="newestBots" />
+            </v-flex>
+            <v-flex xs12 md10 offset-md1 class="mb-3">
+                <h6 class="title">Sponsored Bots</h6>
 
-                            <bot-list-short :bots="sponsoredBots" />
-                        </section>
-                    </v-flex>
-                </v-layout>
+                <bot-list-short :bots="sponsoredBots" />
             </v-flex>
         </v-layout>
     </v-container>

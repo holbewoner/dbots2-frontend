@@ -1,8 +1,8 @@
 <template>
-    <v-navigation-drawer persistent clipped app v-model="sidebar.open" enable-resize-watcher>
-        <v-list>
+    <v-navigation-drawer app absolute clipped v-model="sidebar.open" width="200">
+        <v-list dense>
             <v-list-tile v-if="currentUser !== undefined" class="mt-3 mb-4">
-                <v-menu v-if="currentUser" offset-y bottom :disabled="!sidebar.open" z-index="7">
+                <v-menu v-if="currentUser" offset-y bottom :disabled="!sidebar.open">
                     <v-layout row class="user" slot="activator">
                         <v-flex xs3>
                             <v-avatar size="100%">
@@ -32,12 +32,37 @@
                 <v-btn v-else @click="redirectLogin()">Login</v-btn>
             </v-list-tile>
             <v-divider/>
-            <v-list-tile v-for="link in links" exact :to="link.link" :key="link.link">
-                <v-list-tile-action>
-                    <v-icon>{{link.icon}}</v-icon>
-                </v-list-tile-action>
-                {{link.title}}
-            </v-list-tile>
+            <template v-for="link in links">
+                <v-list-tile v-if="!link.children" exact :to="link.link" :key="link.link">
+                    <v-list-tile-action v-if="link.icon">
+                        <v-icon>{{ link.icon }}</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{ link.title }}</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-group v-else :value="isOnRoute(link)" :key="link.link" @click="">
+                    <v-list-tile slot="item" exact :to="link.link">
+                        <v-list-tile-action v-if="link.icon">
+                            <v-icon>{{ link.icon }}</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title>{{ link.title }}</v-list-tile-title>
+                        </v-list-tile-content>
+                        <v-list-tile-action>
+                            <v-icon>keyboard_arrow_down</v-icon>
+                        </v-list-tile-action>
+                    </v-list-tile>
+                    <v-list-tile v-for="childLink in link.children" exact :to="childLink.link" :key="childLink.link">
+                        <v-list-tile-action v-if="childLink.icon">
+                            <v-icon>{{ childLink.icon }}</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title>{{ childLink.title }}</v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                </v-list-group>
+            </template>
         </v-list>
     </v-navigation-drawer>
 </template>
@@ -49,9 +74,28 @@ export default {
     data() {
         return {
             links: [
-                {icon: 'home', title: 'Home', link: '/'},
-                {icon: 'person_outline', title: 'Bots', link: '/bots'},
-                {icon: 'info_outline', title: 'About', link: '/about'}
+                {
+                    icon: "home",
+                    title: "Home",
+                    link: "/"
+                },
+                {
+                    icon: "person_outline",
+                    title: "Bots",
+                    link: "/bots",
+                    children: [
+                        {
+                            icon: "",
+                            title: "Submit Bot",
+                            link: "/bots/new"
+                        }
+                    ]
+                },
+                {
+                    icon: "info_outline",
+                    title: "About",
+                    link: "/about"
+                }
             ],
             // object - current authenticated user, null - not logged in
             // undefined - unloaded, since auth is client-side
@@ -64,6 +108,9 @@ export default {
         },
         doLogout() {
             this.$store.dispatch("auth/logout")
+        },
+        isOnRoute(link) {
+            return this.$route.path.indexOf(link.link) === 0
         }
     },
     mounted() {
