@@ -1,9 +1,26 @@
 module.exports = {
-    mode: 'spa', // SPA allows us to debug easier
+    // mode: 'spa', // SPA allows us to debug easier
 
     build: {
-        vendor: ['vuetify', 'axios', 'marked'],
-        extractCSS: true
+        vendor: [
+            '~/plugins/vuetify',
+            '~/plugins/numeral',
+            '~/plugins/localStorage.js'
+        ],
+        extractCSS: true,
+        // /*
+        // ** Run ESLint on save
+        // */
+        // extend (config, ctx) {
+        //     if (ctx.dev && ctx.isClient) {
+        //         config.module.rules.push({
+        //             enforce: 'pre',
+        //             test: /\.(js|vue)$/,
+        //             loader: 'eslint-loader',
+        //             exclude: /(node_modules)/
+        //         })
+        //     }
+        // }
     },
 
     plugins: [

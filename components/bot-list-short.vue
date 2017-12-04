@@ -8,7 +8,7 @@
             </v-card-title>
         </v-card>
         <v-list class="pt-0 pb-0" three-line>
-            <v-list-tile class="bot" avatar v-for="bot in bots" :key="bot.id" :to="'/bots/'+bot.id">
+            <v-list-tile v-for="bot in bots" :key="bot.id" :to="botURLPrefix + bot.id" class="bot" avatar>
                 <v-list-tile-avatar size="55px" class="pt-0 mr-3">
                     <img v-if="bot.icon" :src="'https://cdn.discordapp.com/app-icons/'+bot.id+'/'+bot.icon+'.jpg'" />
                     <img v-else src="http://lorempixel.com/256/256/people" />
@@ -22,7 +22,7 @@
                     </v-list-tile-sub-title>
                     <v-list-tile-sub-title>{{ bot.tagline }}</v-list-tile-sub-title>
                 </v-list-tile-content>
-                <v-list-tile-action class="hidden-xs-only pr-3">
+                <v-list-tile-action v-if="bot.stats" class="hidden-xs-only pr-3">
                     <like-dislike-ratio :likes="bot.stats.likes" :dislikes="bot.stats.dislikes"></like-dislike-ratio>
                 </v-list-tile-action>
             </v-list-tile>
@@ -36,7 +36,12 @@ import LikeDislikeRatio from '~/components/like-dislike-ratio.vue'
 
 export default {
     name: 'bot-list-short',
-    props: ['bots'],
+    props: ['bots', 'unverified'],
+    computed: {
+        botURLPrefix() {
+            return this.unverified ? "/unverified_bots/" : "/bots/";
+        }
+    },
     components: {
         LikeDislikeRatio
     }

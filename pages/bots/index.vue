@@ -28,13 +28,13 @@
                                     </v-list-tile>
                                     <v-list-tile>
                                         <v-select prepend-icon="label_outline" label="Tags" :items="tagList" v-model="tags" multiple single-line bottom chips @input="debounceSearch()">
-                                            <template slot="selection" scope="selectedData">
+                                            <template slot="selection" slot-scope="selectedData">
                                                 <v-chip close @input="selectedData.parent.selectItem(selectedData.item)" :selected="selectedData.selected" class="chip--select-multi" :key="selectedData.item.name">
                                                     <v-icon>{{ selectedData.item.icon }}</v-icon>
                                                     {{ selectedData.item.text }}
                                                 </v-chip>
                                             </template>
-                                            <template slot="item" scope="itemData">
+                                            <template slot="item" slot-scope="itemData">
                                                 <template>
                                                     <v-list-tile-avatar><v-icon>{{ itemData.item.icon }}</v-icon></v-list-tile-avatar>
                                                     <v-list-tile-content>{{ itemData.item.text }}</v-list-tile-content>
@@ -216,7 +216,6 @@ export default {
         }
     },
     async asyncData({ query }) {
-        console.log("Recalculating")
         let res = await axios.get(`/bots`, {
             params: {
                 library: query.library || undefined,

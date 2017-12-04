@@ -2,9 +2,9 @@
     <v-container>
         <v-layout row>
             <v-flex class="pr-3 flex--no-grow">
-                <v-badge color="green lighten-2" class="badge--status">
-                    <span slot="badge"></span>
-                    <v-avatar size="9rem">
+                <v-badge overlap bottom color="green lighten-1" class="status-badge">
+                    <span slot="badge">&nbsp;</span>
+                    <v-avatar size="128">
                         <img v-if="bot.icon" :src="'https://cdn.discordapp.com/app-icons/'+bot.id+'/'+bot.icon+'.png'" />
                         <img v-else src="http://lorempixel.com/256/256/people" />
                     </v-avatar>
@@ -15,7 +15,7 @@
                     <v-flex>
                         <v-layout row wrap>
                             <v-flex>
-                                <span class="display-1">{{bot.name}}</span>
+                                <span class="display-1">{{ bot.name }}</span>
                                 <br/>
                                 <span class="subtitle grey--text text--darken-2"> by <span v-for="(owner, index) in bot.owners"><span v-if="index > 0">, </span>{{ owner.username }}#{{ owner.discriminator }}</span></span>
                             </v-flex>
@@ -45,8 +45,11 @@
                             </v-chip>
                         </v-layout>
                         <v-layout row wrap class="flex--right">
-                            <v-chip small disabled v-for="tag in bot.tags" :key="tag" class="grey darken-2">
-                                <v-avatar><v-icon>{{getTagData(tag).icon}}</v-icon></v-avatar> {{getTagData(tag).name}}
+                            <v-chip v-for="tag in bot.tags" :key="tag" small disabled class="grey darken-2">
+                                <v-avatar>
+                                    <v-icon>{{getTagData(tag).icon}}</v-icon>
+                                </v-avatar>
+                                {{getTagData(tag).name}}
                             </v-chip>
                         </v-layout>
                     </v-flex>
@@ -64,7 +67,7 @@
             <v-tabs-items>
                 <v-tabs-content id="info" v-html="parseDescription(bot.description)">No description provided</v-tabs-content>
                 <v-tabs-content id="commands" v-if="bot.commands && bot.commands.length">
-                    <bot-command-list :commands="bot.commands" :categories="bot.command_categories" :prefix="activePrefix"></bot-command-list>
+                    <bot-command-list :commands="bot.commands" :categories="bot.command_categories" :prefixes="bot.prefixes"></bot-command-list>
                 </v-tabs-content>
                 <v-tabs-content id="stats" v-if="bot.stats">
                     <p>TODO: stats</p>
@@ -72,18 +75,42 @@
             </v-tabs-items>
         </v-tabs>
 
-        <v-speed-dial fixed bottom right hover>
+        <v-speed-dial v-if="isCurrentOwner" fixed bottom right>
             <v-btn slot="activator" fab>
                 <v-icon>settings</v-icon>
                 <v-icon>close</v-icon>
             </v-btn>
-            <v-tooltip left v-for="link in links" :key="link.to">
-                <v-btn fab small append :to="link.to" :class="link.class" slot="activator">
-                    <v-icon v-text="link.icon">error_outline</v-icon>
+            <v-tooltip v-if="isCurrentOwner" left>
+                <v-btn fab small append to="edit" slot="activator">
+                    <v-icon>mode_edit</v-icon>
                 </v-btn>
-                <span v-text="link.tooltip">Unknown</span>
+                <span>Edit</span>
+            </v-tooltip>
+            <v-tooltip v-if="isCurrentOwner" left>
+                <v-btn fab small append color="red" @click.native.stop="deleteDialog = true" slot="activator">
+                    <v-icon>delete</v-icon>
+                </v-btn>
+                <span>Delete</span>
             </v-tooltip>
         </v-speed-dial>
+        <v-dialog v-model="deleteDialog" persistent max-width="350">
+            <v-card>
+                <v-card-title class="headline">Delete {{ bot.name }}?</v-card-title>
+                <v-card-text>Are you sure you want to delete {{ bot.name }}?</v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn flat @click.native="deleteDialog = false">No</v-btn>
+                    <v-btn :disabled="deleteLoading" color="red" @click.native="deleteBot()">
+                        <span v-if="!deleteLoading">Yes</span>
+                        <v-progress-circular v-else indeterminate></v-progress-circular>
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-snackbar :timeout="10000" color="red" v-model="snackbarError">
+            {{ snackbarErrorText }}
+            <v-btn flat @click.native="snackbarError = false">Close</v-btn>
+        </v-snackbar>
     </v-container>
 </template>
 
@@ -120,30 +147,51 @@ export default {
                 return "No description given."
             }
             return marked(description)
+        },
+        deleteBot() {
+            this.deleteLoading = true;
+            axios.delete(`/bots/${this.bot.id}`, {
+                headers: {
+                    Authorization: this.$store.state.auth.token
+                }
+            }).then(() => {
+                this.deleteDialog = false
+                this.deleteLoading = false
+
+                this.$router.go("/bots")
+            }).catch((err) => {
+                if(err && err.response && err.response.data && err.response.data.error) {
+                    this.snackbarErrorText = "Error deleting bot: " + err.response.data.error
+                } else {
+                    this.snackbarErrorText = "Error deleting bot"
+                }
+                this.snackbarError = true
+                this.deleteLoading = false
+            })
         }
     },
     computed: {
-        activePrefix() {
-            return this.bot.prefix
-        },
         inviteURL() {
-            var url = "https://discordapp.com/oauth2/authorize?client_id=" + this.bot.id;
-            var scopes = this.bot.scopes;
+            var url = "https://discordapp.com/oauth2/authorize?client_id=" + this.bot.id
+            var scopes = this.bot.scopes
             if(!scopes || !scopes.length) {
-                scopes = ["bot"];
+                scopes = ["bot"]
             }
-            url += "&scope=" + scopes.join("+");
+            url += "&scope=" + scopes.join("+")
             if(!isNaN(this.bot.permissions)) {
-                url += "&permissions=" + this.bot.permissions;
+                url += "&permissions=" + this.bot.permissions
             }
             if(scopes.find((s) => s !== "bot")) {
-                url += "&response_type=code";
+                url += "&response_type=code"
             }
             if(this.bot.redirect_uri) {
-                url += "&redirect_uri=" + this.bot.redirect_uri;
+                url += "&redirect_uri=" + this.bot.redirect_uri
             }
-            url += "&state=dbots";
-            return url;
+            url += "&state=dbots"
+            return url
+        },
+        isCurrentOwner() {
+            return !!(this.currentUser && this.bot.owners && this.bot.owners.find((o) => o.id === this.currentUser.id))
         }
     },
     async asyncData({ params }) {
@@ -155,10 +203,20 @@ export default {
     },
     data() {
         return {
-            links: [
-                {to: 'edit', tooltip: 'Edit', icon: 'mode_edit'},
-                {to: 'comment', tooltip: 'Review', icon: 'mode_comment'}
-            ]
+            currentUser: undefined,
+
+            deleteDialog: this.$route.hash === "#delete",
+            deleteLoading: false,
+
+            snackbarError: false,
+            snackbarErrorText: null
+        }
+    },
+    mounted() {
+        this.currentUser = this.$store.state.auth && this.$store.state.auth.user
+
+        if(!this.currentUser) {
+            return
         }
     },
     validate ({ params }) {
@@ -171,7 +229,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .chip .avatar.count {
     border-radius: 16px;
     min-width: 32px;
@@ -182,5 +240,14 @@ export default {
 }
 i.material-icons.icon.clickable {
     cursor: pointer;
+}
+.status-badge.badge--overlap.badge--bottom .badge__badge {
+    bottom: 4px;
+}
+.status-badge.badge--overlap .badge__badge {
+    right: 4px;
+    border: solid 2px #2c2f33 !important;
+    height: 24px;
+    width: 24px;
 }
 </style>

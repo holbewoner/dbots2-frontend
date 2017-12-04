@@ -49,13 +49,18 @@ import marked from '~/plugins/marked'
 
 export default {
     name: 'bot-command-list',
-    props: ['commands', 'categories', 'prefix'],
+    props: ['commands', 'categories', 'prefixes'],
     methods: {
         parseDescription(description) {
             if(!description) {
                 return "No description given."
             }
             return marked(description)
+        }
+    },
+    computed: {
+        prefix() {
+            return this.prefixes[Math.floor(Math.random() * this.prefixes.length)]
         }
     },
     data() {

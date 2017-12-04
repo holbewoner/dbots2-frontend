@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-layout row>
+        <v-layout row wrap>
             <v-flex xs12 class="text-xs-center">
                 <h2 class="display-3">About</h2>
             </v-flex>

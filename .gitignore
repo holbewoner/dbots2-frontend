@@ -1,4 +1,5 @@
 # Let's ignore the object with infinite mass, shall we?
 node_modules
+package-lock.json
 .nuxt
 .DS_Store
