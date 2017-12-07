@@ -27,7 +27,7 @@
 
 <script>
 import PageFooter from '~/components/page-footer.vue'
-import NavigationDrawer from '~/components/navigation-drawer.vue'
+import NavigationDrawerList from '~/components/navigation-drawer-list.vue'
 
 export default {
     props: ['error'],
@@ -46,7 +46,7 @@ export default {
     // },
     components: {
         PageFooter,
-        NavigationDrawer
+        NavigationDrawerList
     }
 }
 </script>

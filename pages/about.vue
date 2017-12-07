@@ -17,3 +17,17 @@
         </v-layout>
     </v-container>
 </template>
+<script>
+export default {
+    data() {
+        return {
+        }
+    },
+    beforeMount() {
+        this.whatStyles = {
+            color: '#f00',
+            transform: null
+        }
+    }
+}
+</script>

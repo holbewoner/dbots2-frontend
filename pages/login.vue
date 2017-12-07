@@ -31,7 +31,10 @@ export default {
         }
 
         this.status = "Checking authorization code..."
-        this.$store.dispatch("auth/login", this.$route.query.code).then(() => {
+        this.$store.dispatch("auth/login", {
+            code: this.$route.query.code,
+            redirectURI: window.location.href
+        }).then(() => {
             this.status = "Verifying current user..."
             return this.$store.dispatch("auth/getCurrentUser").then(() => {
                 this.status = "Success!"

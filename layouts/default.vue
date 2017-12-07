@@ -1,33 +1,36 @@
 <template>
-    <v-app dark toolbar footer>
-        <navigation-drawer :sidebar="sidebar" />
-        <v-toolbar app fixed clipped-left>
-            <v-toolbar-side-icon @click.stop="sidebar.open = !sidebar.open"></v-toolbar-side-icon>
+    <v-app dark>
+        <v-navigation-drawer app absolute :fixed="false" clipped v-model="drawer">
+            <navigation-drawer-list />
+        </v-navigation-drawer>
+        <v-toolbar app absolute clipped-left>
+            <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title>{{ navTitle }}</v-toolbar-title>
         </v-toolbar>
         <v-content>
             <nuxt />
         </v-content>
-        <page-footer />
+        <v-footer app absolute>
+            <div>&copy; 2017 Discord Bots | Not affiliated with Discord Inc.</div>
+        </v-footer>
     </v-app>
 </template>
 
 <script>
 import PageFooter from '~/components/page-footer.vue'
-import NavigationDrawer from '~/components/navigation-drawer.vue'
+import NavigationDrawerList from '~/components/navigation-drawer-list.vue'
 
 export default {
     data() {
         return {
-            sidebar: {
-                open: true
-            },
+            drawer: null,
+
             navTitle: "Discord Bots"
         }
     },
     components: {
         PageFooter,
-        NavigationDrawer
+        NavigationDrawerList
     },
     mounted() {
         const message = "bots.discord.pw"

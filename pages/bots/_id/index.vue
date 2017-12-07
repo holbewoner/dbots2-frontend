@@ -30,7 +30,7 @@
                     </v-flex>
                 </v-layout>
             </v-flex>
-            <v-flex>
+            <v-flex class="flex--no-grow">
                 <v-layout column class="flex--space-between">
                     <v-flex>
                         <v-layout row wrap class="flex--right">
@@ -249,5 +249,15 @@ i.material-icons.icon.clickable {
     border: solid 2px #2c2f33 !important;
     height: 24px;
     width: 24px;
+}
+/* TODO where did these go */
+.flex--no-grow {
+    flex-grow: 0;
+}
+.flex--grow {
+    flex-grow: 1;
+}
+.flex--right {
+    justify-content: flex-end;
 }
 </style>

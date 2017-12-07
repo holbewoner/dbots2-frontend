@@ -3,7 +3,8 @@
         <!-- i honestly can't find a better way to do this even though it looks like shit -->
         <span class="likes">{{storedLikes | numeral('0a')}}</span>
         <v-icon @click.prevent="toggleLike()" :class="{disabled: !this.controls, active: state == 1}">thumb_up</v-icon>
-        <v-progress-linear v-model="ratio" height="2" color="green" background-color="red"></v-progress-linear>
+        <v-progress-linear v-if="(storedLikes + storedDislikes) == 0" v-model="ratio" height="2" color="grey" background-color="grey"></v-progress-linear>
+        <v-progress-linear v-else v-model="ratio" height="2" color="green" background-color="red"></v-progress-linear>
         <v-icon @click.prevent="toggleDislike()" :class="{disabled: !this.controls, active: state == -1}">thumb_down</v-icon>
         <span class="dislikes">{{storedDislikes | numeral('0a')}}</span>
     </div>

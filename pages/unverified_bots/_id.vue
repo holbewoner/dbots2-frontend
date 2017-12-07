@@ -101,7 +101,7 @@
             </v-btn>
             <v-tooltip left>
                 <v-btn fab small append @click.native.stop="approveDialog = true" slot="activator">
-                    <v-icon>mode_edit</v-icon>
+                    <v-icon>check</v-icon>
                 </v-btn>
                 <span>Approve</span>
             </v-tooltip>
@@ -245,7 +245,7 @@ export default {
             return url
         },
         isCurrentMod() {
-            return this.currentUser && (this.currentUser.mod || this.currentUser.admin)
+            return this.currentUser && this.currentUser.mod
         }
     },
     data() {

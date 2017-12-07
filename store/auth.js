@@ -29,9 +29,10 @@ export const actions = {
             commit("setUser", res.data)
         })
     },
-    login({ commit, dispatch }, code) {
+    login({ commit, dispatch }, data) {
         return axios.post("/login", {
-            code
+            code: data.code,
+            redirect_uri: data.redirectURI
         }).then((res) => {
             commit("setToken", res.data.token)
         })

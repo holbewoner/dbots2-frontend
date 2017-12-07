@@ -1,5 +1,6 @@
 module.exports = {
     // mode: 'spa', // SPA allows us to debug easier
+    mode: "universal",
 
     build: {
         vendor: [
@@ -42,7 +43,7 @@ module.exports = {
     },
 
     head: {
-        titleTemplate: (x) => (x) ? `${x} - Discord Bots` : 'Discord Bots',
+        title: 'Discord Bots',
 
         meta: [
             { charset: 'utf-8' },
@@ -61,5 +62,6 @@ module.exports = {
     css: [
         '~/assets/vuetify.styl',
         '~/assets/main.scss'
+        // '~/assets/compiled.css'
     ]
 }
