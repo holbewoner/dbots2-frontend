@@ -171,6 +171,9 @@ export default {
         }
     },
     computed: {
+        currentUser() {
+            return this.$store.state.auth.user
+        },
         inviteURL() {
             var url = "https://discordapp.com/oauth2/authorize?client_id=" + this.bot.id
             var scopes = this.bot.scopes
@@ -203,20 +206,11 @@ export default {
     },
     data() {
         return {
-            currentUser: undefined,
-
             deleteDialog: this.$route.hash === "#delete",
             deleteLoading: false,
 
             snackbarError: false,
             snackbarErrorText: null
-        }
-    },
-    mounted() {
-        this.currentUser = this.$store.state.auth && this.$store.state.auth.user
-
-        if(!this.currentUser) {
-            return
         }
     },
     validate ({ params }) {

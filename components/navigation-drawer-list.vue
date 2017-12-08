@@ -102,28 +102,24 @@ export default {
                     title: "About",
                     link: "/about"
                 }
-            ],
-            // object - current authenticated user, null - not logged in
-            // undefined - unloaded, since auth is client-side
-            currentUser: undefined
+            ]
+        }
+    },
+    computed: {
+        currentUser() {
+            return this.$store.state.auth.user
         }
     },
     methods: {
         redirectLogin() {
-            window.location.href = `https://discordapp.com/oauth2/authorize?client_id=152988350679220225&redirect_uri=${window.location.origin}/login&scope=identify&response_type=code&state=path:${this.$route.path}`
+            window.location.href = `https://canary.discordapp.com/oauth2/authorize?client_id=152988350679220225&redirect_uri=${window.location.origin}/login&scope=identify&response_type=code&state=path:${this.$route.path}`
         },
         doLogout() {
             this.$store.dispatch("auth/logout")
         }
     },
     mounted() {
-        this.currentUser = this.$store.state.auth.user
-
-        this.$store.subscribe((mutation, state) => {
-            if(mutation.type === "auth/setUser" || mutation.type === "auth/logout") {
-                this.currentUser = state.auth.user
-            }
-        })
+        this.$store.dispatch("auth/checkCookie", document.cookie)
     }
 }
 </script>

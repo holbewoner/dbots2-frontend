@@ -1,14 +1,10 @@
 <template>
     <v-container v-if="!currentUser" fluid>
         <v-layout row>
-            <v-flex v-if="currentUser === null" xs12>
+            <v-flex xs12>
                 <v-alert color="error" icon="warning" value="true">
                     You must be logged in to view unverified bots.
                 </v-alert>
-            </v-flex>
-            <v-flex v-else xs12 class="text-xs-center">
-                <p class="headline">Authenticating</p>
-                <v-progress-circular indeterminate></v-progress-circular>
             </v-flex>
         </v-layout>
     </v-container>
@@ -41,22 +37,26 @@ import axios from '~/plugins/axios'
 import BotListShort from '~/components/bot-list-short.vue'
 
 export default {
-    computed: {
-        totalPages() {
-            return Math.max(Math.ceil(this.totalBots / this.limit), 1)
+    async asyncData({ params, store }) {
+        let res = await axios.get(`/unverified_bots`, {
+            params: {
+                limit: 20,
+                page: 1
+            },
+            headers: {
+                Authorization: store.state.auth.token
+            }
+        })
+
+        return {
+            unverifiedBots: res.data,
+            totalBots: +res.headers["x-total"] || 0
         }
     },
     data() {
         return {
-            error: null,
-            loading: true,
-            currentUser: undefined,
-
             limit: 20,
-            page: 1,
-
-            unverifiedBots: null,
-            totalBots: 0
+            page: 1
         }
     },
     methods: {
@@ -90,14 +90,14 @@ export default {
             });
         }
     },
-    mounted() {
-        this.currentUser = this.$store.state.auth && this.$store.state.auth.user
-
-        if(!this.currentUser) {
-            return
+    computed: {
+        currentUser() {
+            return this.$store.state.auth.user
+        },
+        totalPages() {
+            console.log("hi")
+            return Math.max(Math.ceil(this.totalBots / this.limit), 1)
         }
-
-        this.getUnverifiedBots()
     },
     components: {
         BotListShort

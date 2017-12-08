@@ -1,28 +1,10 @@
 <template>
     <v-container v-if="!currentUser" fluid>
         <v-layout row>
-            <v-flex v-if="currentUser === null" xs12>
+            <v-flex xs12>
                 <v-alert color="error" icon="warning" value="true">
                     You must be logged in to view your profile.
                 </v-alert>
-            </v-flex>
-            <v-flex v-else xs12 class="text-xs-center">
-                <p class="headline">Authenticating</p>
-                <v-progress-circular indeterminate></v-progress-circular>
-            </v-flex>
-        </v-layout>
-    </v-container>
-    <v-container v-else-if="!bot" fluid>
-        <v-layout row>
-            <v-flex xs12>
-                <div v-if="loading" class="text-xs-center">
-                    <v-progress-circular indeterminate></v-progress-circular>
-                </div>
-                <div v-else class="text-xs-center">
-                    <h1>404</h1>
-                    <p class="headline">Page not found</p>
-                    <v-btn primary to="/">Home</v-btn>
-                </div>
             </v-flex>
         </v-layout>
     </v-container>
@@ -225,6 +207,9 @@ export default {
         }
     },
     computed: {
+        currentUser() {
+            return this.$store.state.auth.user
+        },
         inviteURL() {
             var url = "https://discordapp.com/oauth2/authorize?client_id=" + this.bot.id
             var scopes = this.bot.scopes
@@ -248,14 +233,19 @@ export default {
             return this.currentUser && this.currentUser.mod
         }
     },
+    async asyncData({ params, store }) {
+        let { data: bot } = await axios.get(`/unverified_bots/${params.id}`, {
+            headers: {
+                Authorization: store.state.auth.token
+            }
+        })
+
+        return {
+            bot: bot
+        }
+    },
     data() {
         return {
-            error: null,
-            loading: true,
-            currentUser: undefined,
-
-            bot: null,
-
             deleteDialog: this.$route.hash === "#delete",
             deleteLoading: false,
 
@@ -265,36 +255,6 @@ export default {
             snackbarError: false,
             snackbarErrorText: null
         }
-    },
-    mounted() {
-        this.currentUser = this.$store.state.auth && this.$store.state.auth.user
-
-        if(!this.currentUser) {
-            return
-        }
-
-        this.loading = true;
-        axios.get(`/unverified_bots/${this.$route.params.id}`, {
-            headers: {
-                Authorization: this.$store.state.auth.token
-            }
-        }).then((res) => {
-            this.bot = res.data
-
-            this.loading = false;
-        }).catch((err) => {
-            console.log(err && err.response && err.response.data || err)
-            if(err.response && err.response.data && err.response.data.error) {
-                if(Array.isArray(err.response.data.error)) {
-                    this.error = err.response.data.error.join(", ")
-                } else {
-                    this.error = err.response.data.error
-                }
-            } else {
-                this.error = "Unknown API error"
-            }
-            this.loading = false
-        });
     },
     validate ({ params }) {
         return /^[0-9]+$/.test(params.id)

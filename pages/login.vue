@@ -20,7 +20,7 @@ export default {
         if(!this.$route.query.code && !this.$route.query.error && !(document.referrer && ~document.referrer.indexOf("discordapp.com/oauth2/authorize"))) {
             this.status = "Logging in with Discord..."
             setTimeout(() => {
-                window.location.href = `https://discordapp.com/oauth2/authorize?client_id=152988350679220225&redirect_uri=${window.location.origin}/login&scope=identify&response_type=code`
+                window.location.href = `https://canary.discordapp.com/oauth2/authorize?client_id=152988350679220225&redirect_uri=${window.location.origin}/login&scope=identify&response_type=code`
             }, 500)
             return
         }
@@ -33,7 +33,7 @@ export default {
         this.status = "Checking authorization code..."
         this.$store.dispatch("auth/login", {
             code: this.$route.query.code,
-            redirectURI: window.location.href
+            redirectURI: window.location.origin + window.location.pathname
         }).then(() => {
             this.status = "Verifying current user..."
             return this.$store.dispatch("auth/getCurrentUser").then(() => {

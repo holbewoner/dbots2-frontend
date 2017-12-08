@@ -5,8 +5,7 @@ module.exports = {
     build: {
         vendor: [
             '~/plugins/vuetify',
-            '~/plugins/numeral',
-            '~/plugins/localStorage.js'
+            '~/plugins/numeral'
         ],
         extractCSS: true,
         // /*
@@ -26,8 +25,7 @@ module.exports = {
 
     plugins: [
         '~/plugins/vuetify',
-        '~/plugins/numeral',
-        { src: '~/plugins/localStorage.js', ssr: false }
+        '~/plugins/numeral'
     ],
 
     loading: {

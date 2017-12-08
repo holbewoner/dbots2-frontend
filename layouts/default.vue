@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import PageFooter from '~/components/page-footer.vue'
 import NavigationDrawerList from '~/components/navigation-drawer-list.vue'
 
 export default {
@@ -29,7 +28,6 @@ export default {
         }
     },
     components: {
-        PageFooter,
         NavigationDrawerList
     },
     mounted() {
