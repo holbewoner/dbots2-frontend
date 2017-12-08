@@ -4,20 +4,42 @@
             <v-flex xs12 md10 offset-md1 class="mb-3">
                 <v-card>
                     <v-toolbar color="secondary" dense>
-                        <v-select prepend-icon="search" :items="tagList" v-model="tags" @input="debounceSearch" dont-fill-mask-blanks autocomplete clearable chips deletable-chips dense :filter="filterTags" item-avatar="icon" multi-line multiple return-object tags>
+                        <v-text-field hide-details single-line prepend-icon="search" placeholder="Text" v-model="search" :error="!!error" @input="debounceSearch"></v-text-field>
+                        <v-btn icon :disabled="loading" @click="debounceSearch">
+                            <v-progress-circular v-if="loading" indeterminate color="primary"></v-progress-circular>
+                            <v-icon v-else>arrow_forward</v-icon>
+                        </v-btn>
+                        <v-btn v-if="refreshable" icon @click="debounceSearch">
+                            <v-icon>refresh</v-icon>
+                        </v-btn>
+                        <v-menu offset-x left origin="top right" :close-on-content-click="false" :nudge-width="250">
+                            <v-btn icon slot="activator">
+                                <v-icon>more_vert</v-icon>
+                            </v-btn>
+                            <v-card>
+                                <v-card-title>
+                                    <p class="title">Filters</p>
+                                </v-card-title>
+                                <v-list>
+                                    <v-list-tile>
+                                        <v-select prepend-icon="sort" label="Sort" :items="sortList" v-model="sort" multiple single-line bottom @input="debounceSearch"></v-select>
+                                    </v-list-tile>
+                                    <v-list-tile>
+                                        <v-select prepend-icon="library_books" label="Library" :items="libraryList" v-model="library" single-line bottom auto clearable autocomplete @input="debounceSearch"></v-select>
+                                    </v-list-tile>
+                                </v-list>
+                            </v-card>
+                        </v-menu>
+                    </v-toolbar>
+                    <div class="px-3">
+                        <v-select prepend-icon="label" placeholder="Tags" :items="tagList" v-model="tags" @input="debounceSearch" autocomplete clearable chips deletable-chips dense :filter="filterTags" multi-line multiple return-object>
                             <template slot="selection" slot-scope="selectedData">
                                 <v-chip class="chip--select-multi" close :selected="selectedData.selected" @input="selectedData.parent.selectItem(selectedData.item)" :key="selectedData.item.value || selectedData.item">
-                                    <template v-if="selectedData.item.value">
+                                    <template>
                                         <v-avatar v-if="selectedData.item.icon">
                                             <v-icon>{{ selectedData.item.icon }}</v-icon>
                                         </v-avatar>
                                         {{ selectedData.item.text }}
-                                    </template>
-                                    <template v-else>
-                                        <v-avatar>
-                                            <v-icon>mode_edit</v-icon>
-                                        </v-avatar>
-                                        {{ selectedData.item }}
                                     </template>
                                 </v-chip>
                             </template>
@@ -32,32 +54,7 @@
                                 </template>
                             </template>
                         </v-select>
-                        <v-btn icon :disabled="loading" @click="debounceSearch()">
-                            <v-progress-circular v-if="loading" indeterminate color="primary"></v-progress-circular>
-                            <v-icon v-else>arrow_forward</v-icon>
-                        </v-btn>
-                        <v-btn v-if="refreshable" icon @click="debounceSearch()">
-                            <v-icon>refresh</v-icon>
-                        </v-btn>
-                        <v-menu offset-x left origin="top right" :close-on-content-click="false" :nudge-width="250">
-                            <v-btn icon slot="activator">
-                                <v-icon>more_vert</v-icon>
-                            </v-btn>
-                            <v-card>
-                                <v-card-title>
-                                    <p class="title">Filters</p>
-                                </v-card-title>
-                                <v-list>
-                                    <v-list-tile>
-                                        <v-select prepend-icon="sort" label="Sort" :items="sortList" v-model="sort" multiple single-line bottom @input="debounceSearch()"></v-select>
-                                    </v-list-tile>
-                                    <v-list-tile>
-                                        <v-select prepend-icon="library_books" label="Library" :items="libraryList" v-model="library" single-line bottom auto clearable autocomplete @input="debounceSearch()"></v-select>
-                                    </v-list-tile>
-                                </v-list>
-                            </v-card>
-                        </v-menu>
-                    </v-toolbar>
+                    </div>
                 </v-card>
                 <v-alert v-if="error" color="error" icon="warning" transition="scale-transition" v-model="error" v-text="error"></v-alert>
             </v-flex>
@@ -67,7 +64,8 @@
             <v-flex xs12 md10 offset-md1 class="mb-3">
                 <v-card>
                     <v-card-text class="text-xs-center">
-                        <v-pagination :length="totalPages" v-model="page" @input="searchBots(true)"></v-pagination>
+                        <v-pagination :length="totalPages" v-model="page" @input="searchBots(true)" class="mb-3"></v-pagination>
+                        <p>{{ totalBots }} results</p>
                     </v-card-text>
                 </v-card>
             </v-flex>
@@ -107,11 +105,13 @@ export default {
             if(this.page && this.page !== defaultQuery.page) {
                 query.page = this.page
             }
+            if(this.search) {
+                query.search = this.search
+            }
             if(this.sort && this.sort.length > 0) {
                 query.sort = this.sort.join(",")
             }
             if(this.tags && this.tags.length > 0) {
-                query.search = this.tags.filter((tag) => !tag.value).join(",")
                 query.tags = this.tags.filter((tag) => tag.value)
                     .map((tag) => (tag.value || tag)).join(",")
             }
@@ -198,6 +198,7 @@ export default {
             library: "",
             limit: 20,
             page: 1,
+            search: "",
             sort: [],
             tags: [],
 
@@ -232,9 +233,7 @@ export default {
         var data = {
             bots: res.data,
 
-            totalBots: +res.headers["x-total"] || 0,
-
-            tags: []
+            totalBots: +res.headers["x-total"] || 0
         }
         if(query.library) {
             data.library = query.library
@@ -246,7 +245,7 @@ export default {
             data.page = +query.page
         }
         if(query.search) {
-            data.tags = data.tags.concat(query.search.split(","))
+            data.search = query.search
         }
         if(query.sort) {
             data.sort = query.sort.split(",")
