@@ -59,7 +59,7 @@ module.exports = {
 
     css: [
         '~/assets/vuetify.styl',
-        '~/assets/main.scss'
+        // '~/assets/main.scss'
         // '~/assets/compiled.css'
     ]
 }

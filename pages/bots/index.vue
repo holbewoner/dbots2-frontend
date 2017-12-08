@@ -2,11 +2,36 @@
     <v-container fluid>
         <v-layout row wrap class="bot-list">
             <v-flex xs12 md10 offset-md1 class="mb-3">
-                <v-alert v-if="error" color="error" icon="warning" transition="scale-transition" v-model="error" v-text="error"></v-alert>
                 <v-card>
-                    <v-toolbar color="secondary">
-                        <v-text-field hide-details single-line prepend-icon="search" v-model="search" :error="!!error" @input="debounceSearch()"></v-text-field>
-                        <v-toolbar-side-icon class="hidden-md-and-up"></v-toolbar-side-icon>
+                    <v-toolbar color="secondary" dense>
+                        <v-select prepend-icon="search" :items="tagList" v-model="tags" @input="debounceSearch" dont-fill-mask-blanks autocomplete clearable chips deletable-chips dense :filter="filterTags" item-avatar="icon" multi-line multiple return-object tags>
+                            <template slot="selection" slot-scope="selectedData">
+                                <v-chip class="chip--select-multi" close :selected="selectedData.selected" @input="selectedData.parent.selectItem(selectedData.item)" :key="selectedData.item.value || selectedData.item">
+                                    <template v-if="selectedData.item.value">
+                                        <v-avatar v-if="selectedData.item.icon">
+                                            <v-icon>{{ selectedData.item.icon }}</v-icon>
+                                        </v-avatar>
+                                        {{ selectedData.item.text }}
+                                    </template>
+                                    <template v-else>
+                                        <v-avatar>
+                                            <v-icon>mode_edit</v-icon>
+                                        </v-avatar>
+                                        {{ selectedData.item }}
+                                    </template>
+                                </v-chip>
+                            </template>
+                            <template slot="item" slot-scope="itemData">
+                                <template>
+                                    <v-list-tile-avatar>
+                                        <v-icon v-if="itemData.item.icon">{{ itemData.item.icon }}</v-icon>
+                                    </v-list-tile-avatar>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title v-html="genTagListItemDataText(itemData)"></v-list-tile-title>
+                                    </v-list-tile-content>
+                                </template>
+                            </template>
+                        </v-select>
                         <v-btn icon :disabled="loading" @click="debounceSearch()">
                             <v-progress-circular v-if="loading" indeterminate color="primary"></v-progress-circular>
                             <v-icon v-else>arrow_forward</v-icon>
@@ -27,22 +52,6 @@
                                         <v-select prepend-icon="sort" label="Sort" :items="sortList" v-model="sort" multiple single-line bottom @input="debounceSearch()"></v-select>
                                     </v-list-tile>
                                     <v-list-tile>
-                                        <v-select prepend-icon="label_outline" label="Tags" :items="tagList" v-model="tags" multiple single-line bottom chips @input="debounceSearch()">
-                                            <template slot="selection" slot-scope="selectedData">
-                                                <v-chip close @input="selectedData.parent.selectItem(selectedData.item)" :selected="selectedData.selected" class="chip--select-multi" :key="selectedData.item.name">
-                                                    <v-icon>{{ selectedData.item.icon }}</v-icon>
-                                                    {{ selectedData.item.text }}
-                                                </v-chip>
-                                            </template>
-                                            <template slot="item" slot-scope="itemData">
-                                                <template>
-                                                    <v-list-tile-avatar><v-icon>{{ itemData.item.icon }}</v-icon></v-list-tile-avatar>
-                                                    <v-list-tile-content>{{ itemData.item.text }}</v-list-tile-content>
-                                                </template>
-                                            </template>
-                                        </v-select>
-                                    </v-list-tile>
-                                    <v-list-tile>
                                         <v-select prepend-icon="library_books" label="Library" :items="libraryList" v-model="library" single-line bottom auto clearable autocomplete @input="debounceSearch()"></v-select>
                                     </v-list-tile>
                                 </v-list>
@@ -50,13 +59,10 @@
                         </v-menu>
                     </v-toolbar>
                 </v-card>
+                <v-alert v-if="error" color="error" icon="warning" transition="scale-transition" v-model="error" v-text="error"></v-alert>
             </v-flex>
             <v-flex xs12 md10 offset-md1 class="mb-3">
-                <v-card>
-                    <section>
-                        <bot-list-short :bots="bots" />
-                    </section>
-                </v-card>
+                <bot-list-short :bots="bots" />
             </v-flex>
             <v-flex xs12 md10 offset-md1 class="mb-3">
                 <v-card>
@@ -73,17 +79,7 @@
 import Axios from 'axios'
 import axios from '~/plugins/axios'
 import BotListShort from '~/components/bot-list-short.vue'
-
-// TODO: these tags should be moved into a separate component
-const TAG_LIST = [
-    { icon: "casino", text: "Fun", value: "fun" },
-    { icon: "videogame_asset", text: "Games", value: "games" },
-    { icon: "security", text: "Moderation", value: "moderation" },
-    { icon: "music_note", text: "Music", value: "music" },
-    { icon: "build", text: "Utility", value: "utility" },
-    { icon: "bug_report", text: "Testing", value: "testing" }
-]
-const LIBRARY_LIST = "disco discord-rs discord.io discord.js Discord.Net discord.py Discord4J discordcr DiscordGo Discordia Discordie discordrb DSharpPlus Eris Javacord JDA Nostrum RestCord serenity SwiftDiscord Sword Custom".split(" ")
+import { Libraries, Tags } from '~/data/lists.js'
 
 const defaultQuery = {
     limit: 20,
@@ -111,14 +107,13 @@ export default {
             if(this.page && this.page !== defaultQuery.page) {
                 query.page = this.page
             }
-            if(this.search) {
-                query.search = this.search
-            }
             if(this.sort && this.sort.length > 0) {
                 query.sort = this.sort.join(",")
             }
-            if(this.tags && this.sort.length > 0) {
-                query.tags = this.tags.join(",")
+            if(this.tags && this.tags.length > 0) {
+                query.search = this.tags.filter((tag) => !tag.value).join(",")
+                query.tags = this.tags.filter((tag) => tag.value)
+                    .map((tag) => (tag.value || tag)).join(",")
             }
             return query
         },
@@ -128,6 +123,19 @@ export default {
                 this.inputDebounce = null
             }
             this.inputDebounce = setTimeout(() => this.searchBots(), 250)
+        },
+        filterTags(item, queryText, itemText) {
+            if(!queryText) {
+                return true
+            }
+
+            const text = (itemText || "").toString().toLowerCase()
+            const query = (queryText || "").toString().toLowerCase()
+
+            return !!~text.indexOf(query)
+        },
+        genTagListItemDataText(itemData) {
+            return itemData.parent.genFiltered(itemData.item.text)
         },
         searchBots(force) {
             if(this.cancelSource) {
@@ -187,16 +195,9 @@ export default {
             cancelSource: null,
             inputDebounce: setTimeout(() => this.loading = false, 1000),
 
-            // library: params.library || "",
-            // limit: +params.limit || 20,
-            // page: +params.page || 1,
-            // search: params.search || "",
-            // sort: params.sort ? params.sort.split(",") : [],
-            // tags: params.tags ? params.tags.split(",") : [],
             library: "",
             limit: 20,
             page: 1,
-            search: "",
             sort: [],
             tags: [],
 
@@ -211,8 +212,9 @@ export default {
                 { text: "Rating (lowest)", value: "rating" },
                 { text: "Random", value: "random" }
             ],
-            tagList: TAG_LIST,
-            libraryList: LIBRARY_LIST
+
+            libraryList: Libraries,
+            tagList: Tags
         }
     },
     async asyncData({ query }) {
@@ -230,7 +232,9 @@ export default {
         var data = {
             bots: res.data,
 
-            totalBots: +res.headers["x-total"] || 0
+            totalBots: +res.headers["x-total"] || 0,
+
+            tags: []
         }
         if(query.library) {
             data.library = query.library
@@ -242,13 +246,15 @@ export default {
             data.page = +query.page
         }
         if(query.search) {
-            data.search = query.search
+            data.tags = data.tags.concat(query.search.split(","))
         }
         if(query.sort) {
             data.sort = query.sort.split(",")
         }
         if(query.tags) {
-            data.tags = query.tags.split(",")
+            data.tags = data.tags.concat(query.tags.split(",")
+                .map((tagValue) => Tags.find((item) => item.value === tagValue))
+                .filter((tag) => !!tag))
         }
         return data
     },

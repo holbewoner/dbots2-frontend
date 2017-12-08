@@ -13,16 +13,6 @@
 import axios from '~/plugins/axios'
 import BotForm from '~/components/bot-form'
 
-// TODO: these tags should be moved into a separate component
-const tags = {
-    fun: {icon: 'casino', name: 'Fun'},
-    games: {icon: 'videogame_asset', name: 'Games'},
-    moderation: {icon: 'security', name: 'Moderation'},
-    music: {icon: 'music_note', name: 'Music'},
-    utility: {icon: 'build', name: 'Utility'},
-    testing: {icon: 'bug_report', name: 'Testing'}
-}
-
 export default {
     data() {
         return {

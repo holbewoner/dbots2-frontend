@@ -135,18 +135,9 @@
 
 <script>
 import axios from '~/plugins/axios'
+import { Libraries, Tags } from '~/data/lists.js'
 
-// TODO: these tags should be moved into a separate component
-const TAG_LIST = [
-    { icon: "casino", text: "Fun", value: "fun" },
-    { icon: "videogame_asset", text: "Games", value: "games" },
-    { icon: "security", text: "Moderation", value: "moderation" },
-    { icon: "music_note", text: "Music", value: "music" },
-    { icon: "build", text: "Utility", value: "utility" },
-    { icon: "bug_report", text: "Testing", value: "testing" }
-]
 const SCOPES_LIST = "bot connections email gdm guilds guilds.join identify messages.read rpc rpc.api rpc.notifications.read webhook.incoming".split(" ")
-const LIBRARY_LIST = "disco discord-rs discord.io discord.js Discord.Net discord.py Discord4J discordcr DiscordGo Discordia Discordie discordrb DSharpPlus Eris Javacord JDA Nostrum RestCord serenity SwiftDiscord Sword Custom".split(" ")
 
 export default {
     name: 'bot-form',
@@ -294,8 +285,8 @@ export default {
                 () => this.returnedErrors && this.returnedErrors.not_bot || true,
             ],
 
-            libraryList: LIBRARY_LIST,
-            tagList: TAG_LIST,
+            libraryList: Libraries,
+            tagList: Tags,
             scopesList: SCOPES_LIST,
 
             returnedErrors: null
