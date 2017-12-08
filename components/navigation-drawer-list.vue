@@ -112,7 +112,7 @@ export default {
     },
     methods: {
         redirectLogin() {
-            window.location.href = `https://canary.discordapp.com/oauth2/authorize?client_id=152988350679220225&redirect_uri=${window.location.origin}/login&scope=identify&response_type=code&state=path:${this.$route.path}`
+            window.location.href = `https://discordapp.com/oauth2/authorize?client_id=152988350679220225&redirect_uri=${window.location.origin}/login&scope=identify&response_type=code&state=path:${this.$route.path}`
         },
         doLogout() {
             this.$store.dispatch("auth/logout")
