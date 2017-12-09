@@ -3,7 +3,7 @@
         <v-layout row wrap class="bot-list">
             <v-flex xs12 md10 offset-md1 class="mb-3">
                 <v-card>
-                    <v-toolbar class="elevation-6" color="secondary" dense>
+                    <v-toolbar class="elevation-6" dense>
                         <v-text-field hide-details single-line prepend-icon="search" placeholder="Text" v-model="search" :error="!!error" @input="debounceSearch"></v-text-field>
                         <v-btn icon :disabled="loading" @click="debounceSearch">
                             <v-progress-circular v-if="loading" indeterminate color="primary"></v-progress-circular>
@@ -59,7 +59,7 @@
                 <v-alert v-if="error" color="error" icon="warning" transition="scale-transition" v-model="error" v-text="error"></v-alert>
             </v-flex>
             <v-flex xs12 md10 offset-md1 class="mb-3">
-                <bot-list-short :bots="bots" />
+                <bot-list-short :bots="bots" ratings />
             </v-flex>
             <v-flex xs12 md10 offset-md1 class="mb-3">
                 <v-card>
@@ -251,9 +251,9 @@ export default {
             data.sort = query.sort.split(",")
         }
         if(query.tags) {
-            data.tags = data.tags.concat(query.tags.split(",")
+            data.tags = query.tags.split(",")
                 .map((tagValue) => Tags.find((item) => item.value === tagValue))
-                .filter((tag) => !!tag))
+                .filter((tag) => !!tag)
         }
         return data
     },

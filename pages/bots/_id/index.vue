@@ -45,7 +45,7 @@
                             </v-chip>
                         </v-layout>
                         <v-layout row wrap class="flex--right">
-                            <v-chip v-for="tag in bot.tags" :key="tag" small disabled class="grey darken-2">
+                            <v-chip v-for="tag in bot.tags" :key="tag" small disabled>
                                 <v-avatar>
                                     <v-icon>{{getTagData(tag).icon}}</v-icon>
                                 </v-avatar>

@@ -17,14 +17,10 @@
         </v-layout>
         <v-layout row wrap class="bot-lists">
             <v-flex xs12 md10 offset-md1 class="mb-3">
-                <h6 class="title">My Bots</h6>
-
-                <bot-list-short :bots="myBots" />
+                <bot-list-short :bots="myBots" title="My Bots" />
             </v-flex>
             <v-flex xs12 md10 offset-md1 class="mb-3">
-                <h6 class="title">My Unverified Bots</h6>
-
-                <bot-list-short :bots="myUnverifiedBots" :unverified="true" />
+                <bot-list-short :bots="myUnverifiedBots" title="My Unverified Bots" unverified />
             </v-flex>
         </v-layout>
     </v-container>

@@ -1,5 +1,5 @@
 <template>
-    <v-app dark>
+    <v-app :dark="true">
         <v-navigation-drawer class="elevation-4" floating app absolute clipped v-model="drawer">
             <v-list class="py-2" dense>
                 <v-list-tile v-if="currentUser">
