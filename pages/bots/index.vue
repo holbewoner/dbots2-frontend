@@ -3,7 +3,7 @@
         <v-layout row wrap class="bot-list">
             <v-flex xs12 md10 offset-md1 class="mb-3">
                 <v-card>
-                    <v-toolbar color="secondary" dense>
+                    <v-toolbar class="elevation-6" color="secondary" dense>
                         <v-text-field hide-details single-line prepend-icon="search" placeholder="Text" v-model="search" :error="!!error" @input="debounceSearch"></v-text-field>
                         <v-btn icon :disabled="loading" @click="debounceSearch">
                             <v-progress-circular v-if="loading" indeterminate color="primary"></v-progress-circular>

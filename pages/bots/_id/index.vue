@@ -4,7 +4,7 @@
             <v-flex class="pr-3 flex--no-grow">
                 <v-badge overlap bottom color="green lighten-1" class="status-badge">
                     <span slot="badge">&nbsp;</span>
-                    <v-avatar size="128">
+                    <v-avatar size="128px">
                         <img v-if="bot.icon" :src="'https://cdn.discordapp.com/app-icons/'+bot.id+'/'+bot.icon+'.png'" />
                         <img v-else src="http://lorempixel.com/256/256/people" />
                     </v-avatar>
@@ -58,20 +58,24 @@
         </v-layout>
         <v-tabs :scrollable="false">
             <v-tabs-bar>
-                <v-tabs-item ripple href="#info">Info</v-tabs-item>
-                <v-tabs-item v-if="bot.commands && bot.commands.length" ripple href="#commands">Commands</v-tabs-item>
-                <v-tabs-item v-if="bot.stats" ripple href="#stats">Stats</v-tabs-item>
+                <v-tabs-item href="#info">Info</v-tabs-item>
+                <v-tabs-item v-if="bot.commands && bot.commands.length" href="#commands">Commands</v-tabs-item>
+                <!-- <v-tabs-item v-if="bot.stats" ripple href="#stats">Stats</v-tabs-item> -->
                 <v-tabs-slider />
             </v-tabs-bar>
             <v-divider class="mb-3" />
             <v-tabs-items>
-                <v-tabs-content id="info" v-html="parseDescription(bot.description)">No description provided</v-tabs-content>
+                <v-tabs-content id="info">
+                    <div v-html="parseDescription(bot.description)">
+                        No description provided
+                    </div>
+                </v-tabs-content></v-tabs-content>
                 <v-tabs-content id="commands" v-if="bot.commands && bot.commands.length">
                     <bot-command-list :commands="bot.commands" :categories="bot.command_categories" :prefixes="bot.prefixes"></bot-command-list>
                 </v-tabs-content>
-                <v-tabs-content id="stats" v-if="bot.stats">
+                <!-- <v-tabs-content id="stats" v-if="bot.stats">
                     <p>TODO: stats</p>
-                </v-tabs-content>
+                </v-tabs-content> -->
             </v-tabs-items>
         </v-tabs>
 

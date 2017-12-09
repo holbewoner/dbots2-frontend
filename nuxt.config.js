@@ -4,8 +4,10 @@ module.exports = {
 
     build: {
         vendor: [
-            '~/plugins/vuetify',
-            '~/plugins/numeral'
+            '~/plugins/axios',
+            '~/plugins/marked',
+            '~/plugins/numeral',
+            '~/plugins/vuetify'
         ],
         extractCSS: true,
         // /*

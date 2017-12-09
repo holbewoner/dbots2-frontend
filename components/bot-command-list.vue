@@ -4,34 +4,33 @@
         <v-flex xs12 md4 v-for="category in commandCategories" v-if="category.commands.length" :key="category.name" class="px-2">
             <v-card>
                 <v-list two-line>
-                    <v-list-group>
-                        <v-list-tile slot="item">
-                            <v-list-tile-action v-if="category.icon">
-                                <v-icon>{{category.icon}}</v-icon>
-                            </v-list-tile-action>
+                    <v-list-group :prepend-icon="category.icon">
+                        <v-list-tile slot="activator">
                             <v-list-tile-content>
-                                <v-list-tile-title>{{category.name}}</v-list-tile-title>
-                                <v-list-tile-sub-title v-if="category.tagline">{{category.tagline}}</v-list-tile-sub-title>
+                                <v-list-tile-title>{{ category.name }}</v-list-tile-title>
+                                <v-list-tile-sub-title v-if="category.tagline">{{ category.tagline }}</v-list-tile-sub-title>
                             </v-list-tile-content>
-                            <v-list-tile-action>
-                                <v-icon>keyboard_arrow_down</v-icon>
-                            </v-list-tile-action>
                         </v-list-tile>
-                        <v-list-tile class="list--no-pad-left" v-for="command in category.commands" :key="command.command">
-                            <v-list-tile-action v-if="command.icon">
-                                <v-icon>{{command.icon}}</v-icon>
+                        <v-list-tile v-for="command in category.commands" :key="command.command">
+                            <v-list-tile-action>
+                                <v-icon v-if="command.icon">{{ command.icon }}</v-icon>
                             </v-list-tile-action>
                             <v-list-tile-content>
-                                <v-list-tile-title>{{prefix}}{{command.command}}</v-list-tile-title>
-                                <v-list-tile-sub-title v-if="command.tagline">{{command.tagline}}</v-list-tile-sub-title>
+                                <v-list-tile-title>{{ prefix }}{{ command.command }}</v-list-tile-title>
+                                <v-list-tile-sub-title v-if="command.tagline">{{ command.tagline }}</v-list-tile-sub-title>
                             </v-list-tile-content>
                             <v-list-tile-action>
-                                <v-dialog width="600px">
+                                <v-dialog max-width="800px" scrollable v-model="commandDialogs[command.command]">
                                     <v-icon class="clickable" slot="activator">info</v-icon>
                                     <v-card>
                                         <v-card-title>
-                                            <span class="headline">{{prefix}}{{command.command}}</span>
+                                            <span class="headline">{{ prefix }}{{ command.command }}</span>
+                                            <v-spacer></v-spacer>
+                                            <v-btn icon @click="commandDialogs[command.command] = !commandDialogs[command.command]">
+                                                <v-icon>close</v-icon>
+                                            </v-btn>
                                         </v-card-title>
+                                        <v-divider></v-divider>
                                         <v-card-text v-html="parseDescription(command.description)">No description provided</v-card-text>
                                     </v-card>
                                 </v-dialog>
@@ -85,7 +84,9 @@ export default {
         }
 
         return {
-            commandCategories: commandCategories
+            commandCategories: commandCategories,
+
+            commandDialogs: {}
         }
     }
 }

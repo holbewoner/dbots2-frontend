@@ -8,22 +8,22 @@
         </v-layout>
         <v-layout row wrap class="bot-lists">
             <v-flex xs12 md10 offset-md1 class="mb-3">
-                <h6 class="title">Featured Bots</h6>
+                <h6 class="title mb-2">Featured Bots</h6>
 
                 <bot-list-short :bots="featuredBots" />
             </v-flex>
             <v-flex xs12 md10 offset-md1 class="mb-3">
-                <h6 class="title">Most Liked Bots</h6>
+                <h6 class="title mb-2">Most Liked Bots</h6>
 
                 <bot-list-short :bots="rankedBots" />
             </v-flex>
             <v-flex xs12 md10 offset-md1 class="mb-3">
-                <h6 class="title">Newest Bots</h6>
+                <h6 class="title mb-2">Newest Bots</h6>
 
                 <bot-list-short :bots="newestBots" />
             </v-flex>
             <v-flex xs12 md10 offset-md1 class="mb-3">
-                <h6 class="title">Sponsored Bots</h6>
+                <h6 class="title mb-2">Sponsored Bots</h6>
 
                 <bot-list-short :bots="sponsoredBots" />
             </v-flex>
