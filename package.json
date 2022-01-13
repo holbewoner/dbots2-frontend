@@ -14,16 +14,16 @@
     "heroku-postbuild": "npm run build"
   },
   "dependencies": {
-    "axios": "^0.17.1",
-    "css-loader": "^0.28.7",
-    "marked": "^0.3.7",
-    "node-sass": "^4.7.2",
+    "axios": "^0.21.3",
+    "css-loader": "^2.0.0",
+    "marked": "^1.1.1",
+    "node-sass": "^7.0.1",
     "numeral": "^2.0.6",
-    "nuxt": "=1.0.0-gh-aeb13eb",
+    "nuxt": "2.3.0",
     "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.0",
+    "style-loader": "^0.20.0",
     "vue": "^2.5.9",
-    "vuetify": "^1.0.0-alpha.2",
+    "vuetify": "^2.1.9",
     "vuex": "^3.0.1",
     "vuex-persistedstate": "^2.4.2"
   },
